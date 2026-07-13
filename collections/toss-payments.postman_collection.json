@@ -1,0 +1,219 @@
+{
+  "info": {
+    "name": "Toss Payments Core API",
+    "description": "A grounded, representative subset of the Toss Payments Core API (https://api.tosspayments.com): payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts (v2). Authentication is HTTP Basic - use your secret key as the username with an empty password (Base64 of `secretKey:`). Test secret keys are prefixed test_sk_ / test_gsk_; live keys live_sk_ / live_gsk_.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{secretKey}}", "type": "string" },
+      { "key": "password", "value": "", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.tosspayments.com", "type": "string" },
+    { "key": "secretKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Confirm a payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"paymentKey\": \"\",\n  \"orderId\": \"\",\n  \"amount\": 0\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/payments/confirm", "host": ["{{baseUrl}}"], "path": ["v1", "payments", "confirm"] },
+            "description": "Authorizes a payment created in the checkout window using paymentKey, orderId, and amount."
+          }
+        },
+        {
+          "name": "Key-in (manual card) payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"cardNumber\": \"\",\n  \"cardExpirationYear\": \"\",\n  \"cardExpirationMonth\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/payments/key-in", "host": ["{{baseUrl}}"], "path": ["v1", "payments", "key-in"] },
+            "description": "Approves a payment from card credentials without the checkout window. Requires an additional contract."
+          }
+        },
+        {
+          "name": "Get a payment by paymentKey",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/payments/:paymentKey", "host": ["{{baseUrl}}"], "path": ["v1", "payments", ":paymentKey"], "variable": [{ "key": "paymentKey", "value": "" }] },
+            "description": "Retrieves a Payment object by its paymentKey."
+          }
+        },
+        {
+          "name": "Get a payment by orderId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/payments/orders/:orderId", "host": ["{{baseUrl}}"], "path": ["v1", "payments", "orders", ":orderId"], "variable": [{ "key": "orderId", "value": "" }] },
+            "description": "Retrieves a Payment object by the merchant's orderId."
+          }
+        },
+        {
+          "name": "Cancel a payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"cancelReason\": \"\",\n  \"cancelAmount\": 0\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/payments/:paymentKey/cancel", "host": ["{{baseUrl}}"], "path": ["v1", "payments", ":paymentKey", "cancel"], "variable": [{ "key": "paymentKey", "value": "" }] },
+            "description": "Cancels a payment in full, or partially when cancelAmount is provided. Virtual account cancellations require refundReceiveAccount."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Billing",
+      "item": [
+        {
+          "name": "Issue a billing key from an authKey",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"authKey\": \"\",\n  \"customerKey\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/billing/authorizations/issue", "host": ["{{baseUrl}}"], "path": ["v1", "billing", "authorizations", "issue"] },
+            "description": "Issues a billing key for recurring payments from an authKey and customerKey."
+          }
+        },
+        {
+          "name": "Issue a billing key from card credentials",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerKey\": \"\",\n  \"cardNumber\": \"\",\n  \"cardExpirationYear\": \"\",\n  \"cardExpirationMonth\": \"\",\n  \"customerIdentityNumber\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/billing/authorizations/card", "host": ["{{baseUrl}}"], "path": ["v1", "billing", "authorizations", "card"] },
+            "description": "Issues a billing key directly from card credentials. Requires an additional contract."
+          }
+        },
+        {
+          "name": "Charge a billing key",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customerKey\": \"\",\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/billing/:billingKey", "host": ["{{baseUrl}}"], "path": ["v1", "billing", ":billingKey"], "variable": [{ "key": "billingKey", "value": "" }] },
+            "description": "Approves a recurring payment using a previously issued billing key and matching customerKey."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Virtual Accounts",
+      "item": [
+        {
+          "name": "Issue a virtual account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"customerName\": \"\",\n  \"bank\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/virtual-accounts", "host": ["{{baseUrl}}"], "path": ["v1", "virtual-accounts"] },
+            "description": "Issues a per-order virtual bank account. Deposit events arrive via the DEPOSIT_CALLBACK webhook."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cash Receipts",
+      "item": [
+        {
+          "name": "Issue a cash receipt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"customerIdentityNumber\": \"\",\n  \"type\": \"소득공제\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/cash-receipts", "host": ["{{baseUrl}}"], "path": ["v1", "cash-receipts"] },
+            "description": "Issues a Korean cash receipt for income deduction or expense evidence."
+          }
+        },
+        {
+          "name": "Query cash receipts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/cash-receipts?requestDate=2026-07-12&limit=100", "host": ["{{baseUrl}}"], "path": ["v1", "cash-receipts"], "query": [{ "key": "requestDate", "value": "2026-07-12" }, { "key": "limit", "value": "100" }] },
+            "description": "Queries issued cash receipts by request date with cursor pagination."
+          }
+        },
+        {
+          "name": "Cancel a cash receipt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 0\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/cash-receipts/:receiptKey/cancel", "host": ["{{baseUrl}}"], "path": ["v1", "cash-receipts", ":receiptKey", "cancel"], "variable": [{ "key": "receiptKey", "value": "" }] },
+            "description": "Cancels a cash receipt in full or in part."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Query transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/transactions?startDate=2026-07-01T00:00:00&endDate=2026-07-12T00:00:00&limit=100", "host": ["{{baseUrl}}"], "path": ["v1", "transactions"], "query": [{ "key": "startDate", "value": "2026-07-01T00:00:00" }, { "key": "endDate", "value": "2026-07-12T00:00:00" }, { "key": "limit", "value": "100" }] },
+            "description": "Queries the transaction ledger over a date range with cursor pagination (up to 5000 records per page)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Settlements",
+      "item": [
+        {
+          "name": "Query settlements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/settlements?startDate=2026-07-01&endDate=2026-07-12&dateType=soldDate&page=1&size=100", "host": ["{{baseUrl}}"], "path": ["v1", "settlements"], "query": [{ "key": "startDate", "value": "2026-07-01" }, { "key": "endDate", "value": "2026-07-12" }, { "key": "dateType", "value": "soldDate" }, { "key": "page", "value": "1" }, { "key": "size", "value": "100" }] },
+            "description": "Queries settlement records by sold date or paid-out date with page-based pagination."
+          }
+        },
+        {
+          "name": "Request a manual settlement",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"paymentKey\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/settlements", "host": ["{{baseUrl}}"], "path": ["v1", "settlements"] },
+            "description": "Requests manual settlement for a paymentKey. Requires an additional contract."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payouts",
+      "item": [
+        {
+          "name": "Retrieve payout balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v2/balances", "host": ["{{baseUrl}}"], "path": ["v2", "balances"] },
+            "description": "Returns the funds available for payouts (marketplace payouts v2)."
+          }
+        },
+        {
+          "name": "Request payouts",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"\",\n      \"destination\": \"\",\n      \"amount\": 0\n    }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/v2/payouts", "host": ["{{baseUrl}}"], "path": ["v2", "payouts"] },
+            "description": "Sends a batch of payout requests to sellers (up to 100 per call)."
+          }
+        }
+      ]
+    }
+  ]
+}

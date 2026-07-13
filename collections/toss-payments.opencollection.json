@@ -1,0 +1,230 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Payments Core API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{secretKey}}",
+      "password": ""
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Payments", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Confirm a payment.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/confirm",
+            "body": { "type": "json", "data": "{\n  \"paymentKey\": \"\",\n  \"orderId\": \"\",\n  \"amount\": 0\n}" }
+          },
+          "docs": "Authorizes a payment created in the checkout window using paymentKey, orderId, and amount."
+        },
+        {
+          "info": { "name": "Key-in (manual card) payment.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/key-in",
+            "body": { "type": "json", "data": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"cardNumber\": \"\",\n  \"cardExpirationYear\": \"\",\n  \"cardExpirationMonth\": \"\"\n}" }
+          },
+          "docs": "Approves a payment from card credentials without the checkout window. Requires an additional contract."
+        },
+        {
+          "info": { "name": "Get a payment by paymentKey.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/payments/:paymentKey",
+            "params": [
+              { "name": "paymentKey", "value": "", "type": "path", "description": "The unique key identifying the payment." }
+            ]
+          },
+          "docs": "Retrieves a Payment object by its paymentKey."
+        },
+        {
+          "info": { "name": "Get a payment by orderId.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/payments/orders/:orderId",
+            "params": [
+              { "name": "orderId", "value": "", "type": "path", "description": "The merchant-assigned order ID." }
+            ]
+          },
+          "docs": "Retrieves a Payment object by the merchant's orderId."
+        },
+        {
+          "info": { "name": "Cancel a payment.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/:paymentKey/cancel",
+            "params": [
+              { "name": "paymentKey", "value": "", "type": "path", "description": "The unique key identifying the payment." }
+            ],
+            "body": { "type": "json", "data": "{\n  \"cancelReason\": \"\",\n  \"cancelAmount\": 0\n}" }
+          },
+          "docs": "Cancels a payment in full, or partially when cancelAmount is provided. Virtual account cancellations require refundReceiveAccount."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Billing", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Issue a billing key from an authKey.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/authorizations/issue",
+            "body": { "type": "json", "data": "{\n  \"authKey\": \"\",\n  \"customerKey\": \"\"\n}" }
+          },
+          "docs": "Issues a billing key for recurring payments from an authKey and customerKey."
+        },
+        {
+          "info": { "name": "Issue a billing key from card credentials.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/authorizations/card",
+            "body": { "type": "json", "data": "{\n  \"customerKey\": \"\",\n  \"cardNumber\": \"\",\n  \"cardExpirationYear\": \"\",\n  \"cardExpirationMonth\": \"\",\n  \"customerIdentityNumber\": \"\"\n}" }
+          },
+          "docs": "Issues a billing key directly from card credentials. Requires an additional contract."
+        },
+        {
+          "info": { "name": "Charge a billing key.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/:billingKey",
+            "params": [
+              { "name": "billingKey", "value": "", "type": "path", "description": "The billing key issued for the customer." }
+            ],
+            "body": { "type": "json", "data": "{\n  \"customerKey\": \"\",\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\"\n}" }
+          },
+          "docs": "Approves a recurring payment using a previously issued billing key and matching customerKey."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Virtual Accounts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Issue a virtual account.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/virtual-accounts",
+            "body": { "type": "json", "data": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"customerName\": \"\",\n  \"bank\": \"\"\n}" }
+          },
+          "docs": "Issues a per-order virtual bank account. Deposit events arrive via the DEPOSIT_CALLBACK webhook."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Cash Receipts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Issue a cash receipt.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/cash-receipts",
+            "body": { "type": "json", "data": "{\n  \"amount\": 0,\n  \"orderId\": \"\",\n  \"orderName\": \"\",\n  \"customerIdentityNumber\": \"\",\n  \"type\": \"소득공제\"\n}" }
+          },
+          "docs": "Issues a Korean cash receipt for income deduction or expense evidence."
+        },
+        {
+          "info": { "name": "Query cash receipts.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/cash-receipts?requestDate=2026-07-12&limit=100",
+            "params": [
+              { "name": "requestDate", "value": "2026-07-12", "type": "query", "description": "The date cash receipts were requested." },
+              { "name": "limit", "value": "100", "type": "query", "description": "Maximum records to return (up to 10000)." }
+            ]
+          },
+          "docs": "Queries issued cash receipts by request date with cursor pagination."
+        },
+        {
+          "info": { "name": "Cancel a cash receipt.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/cash-receipts/:receiptKey/cancel",
+            "params": [
+              { "name": "receiptKey", "value": "", "type": "path", "description": "The key identifying the cash receipt." }
+            ],
+            "body": { "type": "json", "data": "{\n  \"amount\": 0\n}" }
+          },
+          "docs": "Cancels a cash receipt in full or in part."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Transactions", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Query transactions.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/transactions?startDate=2026-07-01T00:00:00&endDate=2026-07-12T00:00:00&limit=100",
+            "params": [
+              { "name": "startDate", "value": "2026-07-01T00:00:00", "type": "query", "description": "Start datetime (ISO 8601)." },
+              { "name": "endDate", "value": "2026-07-12T00:00:00", "type": "query", "description": "End datetime (ISO 8601)." },
+              { "name": "limit", "value": "100", "type": "query", "description": "Maximum records (up to 5000)." }
+            ]
+          },
+          "docs": "Queries the transaction ledger over a date range with cursor pagination."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Settlements", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Query settlements.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/settlements?startDate=2026-07-01&endDate=2026-07-12&dateType=soldDate&page=1&size=100",
+            "params": [
+              { "name": "startDate", "value": "2026-07-01", "type": "query", "description": "Start date (YYYY-MM-DD)." },
+              { "name": "endDate", "value": "2026-07-12", "type": "query", "description": "End date (YYYY-MM-DD)." },
+              { "name": "dateType", "value": "soldDate", "type": "query", "description": "soldDate or paidOutDate." },
+              { "name": "page", "value": "1", "type": "query", "description": "Page number." },
+              { "name": "size", "value": "100", "type": "query", "description": "Page size." }
+            ]
+          },
+          "docs": "Queries settlement records by sold date or paid-out date with page-based pagination."
+        },
+        {
+          "info": { "name": "Request a manual settlement.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/settlements",
+            "body": { "type": "json", "data": "{\n  \"paymentKey\": \"\"\n}" }
+          },
+          "docs": "Requests manual settlement for a paymentKey. Requires an additional contract."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payouts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve payout balance.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v2/balances"
+          },
+          "docs": "Returns the funds available for payouts (marketplace payouts v2)."
+        },
+        {
+          "info": { "name": "Request payouts.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v2/payouts",
+            "body": { "type": "json", "data": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"\",\n      \"destination\": \"\",\n      \"amount\": 0\n    }\n  ]\n}" }
+          },
+          "docs": "Sends a batch of payout requests to sellers (up to 100 per call)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

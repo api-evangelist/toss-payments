@@ -1,0 +1,71 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Toss Payments
+providerId: toss-payments
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- South Korea
+- Rate Limiting
+- Quotas
+description: >-
+  Toss Payments does not publish fixed numeric per-account or per-endpoint rate
+  limits for the Core API. Practical throughput is governed by the nature of the
+  operation rather than a documented per-minute request cap: billing-key
+  authorization can take up to 60 seconds to complete, transaction queries
+  return up to 5000 records per page (cursor pagination via startingAfter), cash
+  receipt queries up to 10000 records, and payout requests accept up to 100
+  payouts per call (max 1 billion KRW). Clients should implement idempotency
+  (via Idempotency-Key on mutating calls where supported), exponential backoff,
+  and webhook-based reconciliation rather than tight polling.
+notes: >-
+  No numeric request-rate limit is documented in the public developer center as
+  of the review date. The values below (page sizes and batch limits) are the
+  documented operational bounds, not throttling thresholds. Confirm any
+  account-specific limits with Toss Payments during reconciliation.
+sources:
+- https://docs.tosspayments.com/reference
+- https://docs.tosspayments.com/en/api-guide
+- https://docs.tosspayments.com/en/integration-payouts
+responseCodes:
+  throttled: 429
+limits:
+- name: Core API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Core API.
+- name: Transactions Query Page Size
+  scope: account
+  metric: records
+  limit: 5000 per page
+  notes: The /v1/transactions endpoint returns up to 5000 records per page with cursor pagination (startingAfter).
+- name: Cash Receipts Query Page Size
+  scope: account
+  metric: records
+  limit: 10000 per page
+  notes: The /v1/cash-receipts query returns up to 10000 records per page.
+- name: Payout Batch Size
+  scope: account
+  metric: payouts
+  limit: 100 per request
+  notes: The v2 payouts endpoint accepts up to 100 payout requests per call (max 1 billion KRW total).
+- name: Billing Authorization Time
+  scope: request
+  metric: seconds
+  limit: up to 60s
+  notes: Charging a billing key / authorization can take up to 60 seconds to complete.
+policies:
+- name: Idempotency
+  description: Mutating operations such as cancellation support an Idempotency-Key header so retries do not double-apply.
+- name: Webhook Retries
+  description: Undelivered webhooks are retried up to seven times with exponentially increasing intervals (from 1 minute up to 4096 minutes); endpoints must return HTTP 200.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses, and reconcile via webhooks rather than tight polling.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

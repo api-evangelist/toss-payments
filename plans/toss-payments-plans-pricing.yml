@@ -1,0 +1,149 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Toss Payments
+providerId: toss-payments
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- South Korea
+- Fintech
+- Plans
+description: >-
+  Toss Payments does not sell tiered API subscription plans; it is a payment
+  gateway that earns per-transaction processing fees. There is no charge for API
+  access itself - you pay a percentage (and/or fixed) fee on the value of each
+  approved transaction, varying by payment method (card, easy-pay wallet,
+  virtual account, bank transfer, mobile phone) and negotiated per merchant
+  contract. Onboarding is via a merchant application; test credentials
+  (test_sk_ / test_ck_ keys) are available immediately in the Developer Center
+  for integration before a live contract. Card processing fees are publicly
+  cited around 4.3% (including 10% VAT) for direct sign-up, but the effective
+  rate depends on the card merchant agreement, industry/sales category, and
+  merchant grade. Exact per-method rates are contract-specific and not fully
+  public, so they are not reconciled here.
+notes: >-
+  The API keys themselves carry no fee; revenue is the per-transaction PG fee.
+  Merchants that sign up through a hosting/PG reseller inherit that reseller's
+  fee policy. Verify current method-by-method rates on the Toss Payments fee
+  page and in your merchant contract during reconciliation.
+sources:
+- https://www.tosspayments.com
+- https://www.tosspayments.com/about/fee
+- https://docs.tosspayments.com/en/api-guide
+plans:
+- id: toss-payments-test
+  name: Test / Sandbox
+  type: free
+  description: >-
+    Free integration environment. Test secret and client keys are available in
+    the Developer Center with no contract, letting developers build against the
+    full Core API before going live. No real funds move.
+  entries:
+  - label: API Access
+    name: test_api_access
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: free (test keys)
+    userMultiplied: false
+  elements:
+  - name: Full Core API
+  - name: Test Secret and Client Keys
+  - name: Webhooks
+- id: toss-payments-live
+  name: Live (Per-Transaction PG Fees)
+  type: usage
+  description: >-
+    Production payment processing under a merchant contract. There is no fee for
+    API access; Toss Payments charges a per-transaction processing fee on the
+    value of each approved payment, varying by payment method and merchant
+    agreement. Card is publicly cited around 4.3% incl. VAT for direct sign-up.
+  entries:
+  - label: Card Payment Fee
+    name: card_fee
+    type: usage
+    metric: transaction_value
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: percentage per transaction (card ~4.3% incl. VAT, direct sign-up; contract-dependent)
+    userMultiplied: false
+  - label: Easy Pay / Wallet Fee
+    name: easy_pay_fee
+    type: usage
+    metric: transaction_value
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: percentage per transaction (Toss Pay / KakaoPay / Naver Pay; contract-dependent)
+    userMultiplied: false
+  - label: Virtual Account Fee
+    name: virtual_account_fee
+    type: usage
+    metric: transaction
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: per-transaction fee (typically fixed per deposit; contract-dependent)
+    userMultiplied: false
+  - label: Bank Transfer Fee
+    name: transfer_fee
+    type: usage
+    metric: transaction_value
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: percentage or fixed per transaction (contract-dependent)
+    userMultiplied: false
+  - label: Mobile Phone Fee
+    name: mobile_phone_fee
+    type: usage
+    metric: transaction_value
+    limit: -1
+    timeFrame: month
+    geo: south-korea
+    unit: 1
+    price: percentage per transaction (contract-dependent)
+    userMultiplied: false
+  elements:
+  - name: Full Core API
+  - name: Live Secret and Client Keys
+  - name: Settlements and Payouts
+  - name: Webhooks
+- id: toss-payments-enterprise
+  name: Enterprise / Marketplace
+  type: enterprise
+  description: >-
+    Negotiated terms for high-volume merchants and marketplaces, including the
+    v2 payouts product for paying sellers, manual settlement, key-in payments,
+    and Brandpay. Contract-based pricing and additional agreements required.
+  entries:
+  - label: Negotiated Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: south-korea
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Marketplace Payouts (v2)
+  - name: Manual Settlement
+  - name: Key-In Payments
+  - name: Brandpay
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

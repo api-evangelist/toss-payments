@@ -1,0 +1,111 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Toss Payments
+providerId: toss-payments
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- South Korea
+- Fintech
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Toss Payments spend. Unlike a typical SaaS API, Toss Payments
+  charges no fee for API access - cost is incurred as a per-transaction payment
+  processing fee (PG fee) on the value of each approved payment. The dominant
+  cost driver is the effective fee rate per payment method (card, easy-pay
+  wallet, virtual account, bank transfer, mobile phone), which is set by the
+  merchant contract and varies by industry/sales category and merchant grade.
+  Card processing is publicly cited around 4.3% including 10% VAT for direct
+  sign-up; other methods differ and virtual account is typically a fixed fee per
+  deposit. Settlement (payout to the merchant) and, for marketplaces, seller
+  payouts add timing and balance considerations rather than new fees. Because
+  effective rates are contract-specific and not fully public, per-unit amounts
+  are not reconciled here.
+notes: >-
+  Model the effective blended fee rate from your own settlement data (the
+  Settlements API returns per-transaction fee and payOutAmount), since headline
+  rates vary by contract and method. VAT (10%) applies on top of Korean card
+  fees. Verify current method-by-method rates on the Toss Payments fee page.
+sources:
+- https://www.tosspayments.com
+- https://www.tosspayments.com/about/fee
+- https://docs.tosspayments.com/reference
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Toss Payments
+serviceCategory: Payments and Financial Services
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Per-Transaction
+  billingCurrency: KRW
+  chargeCategories:
+  - Usage
+  - Tax
+  - Adjustment
+focusColumns:
+  ServiceName: Toss Payments PG
+  ServiceCategory: Payments and Financial Services
+  ProviderName: Toss Payments
+  PublisherName: Toss Payments
+  InvoiceIssuerName: Toss Payments
+  BillingCurrency: KRW
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: card_transaction_fee
+  description: Percentage fee on approved card payment value (publicly cited around 4.3% incl. VAT for direct sign-up; contract-dependent).
+  unit: transaction_value
+  aggregation: sum
+  dimensions:
+  - account
+  - method
+  - card_company
+- name: easy_pay_transaction_fee
+  description: Percentage fee on approved easy-pay/wallet payment value (Toss Pay, KakaoPay, Naver Pay; contract-dependent).
+  unit: transaction_value
+  aggregation: sum
+  dimensions:
+  - account
+  - provider
+- name: virtual_account_fee
+  description: Fee per virtual account deposit (typically fixed per transaction; contract-dependent).
+  unit: transaction
+  aggregation: sum
+  dimensions:
+  - account
+  - bank
+- name: transfer_fee
+  description: Fee on approved bank transfer payments (percentage or fixed; contract-dependent).
+  unit: transaction_value
+  aggregation: sum
+  dimensions:
+  - account
+- name: vat
+  description: 10% Korean VAT applied on top of card processing fees.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Pull per-transaction fee and payOutAmount from the Settlements API to compute an effective blended fee rate by method rather than relying on headline rates.
+- name: Allocation
+  description: Tag payments with orderId / customerKey per product or team so processing fees map to internal cost centers and revenue lines.
+- name: Optimization
+  description: Steer customers toward lower-fee methods where appropriate, negotiate method-by-method rates by volume and merchant grade, and reconcile refunds/cancellations which reverse fees.
+- name: Accountability
+  description: Review monthly settlement reports against expected fee rates; assign an owner for the merchant contract and its per-method rate schedule.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

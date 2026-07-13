@@ -1,0 +1,21 @@
+generated: '2026-07-12'
+method: derived
+source: openapi/toss-payments-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: >-
+    HTTP Basic authentication using a Toss Payments secret API key. The secret
+    key is used as the username with an empty password, then Base64 encoded:
+    `Authorization: Basic base64(secretKey:)` (note the trailing colon). Test
+    secret keys are prefixed `test_sk_` / `test_gsk_`; live secret keys are
+    prefixed `live_sk_` / `live_gsk_`. Browser-side client keys (`test_ck_` /
+    `live_ck_`) are used by the JavaScript SDK / payment widget and do not
+    authenticate Core API calls.
+  sources:
+  - openapi/toss-payments-openapi.yml
+  - https://docs.tosspayments.com/en/api-guide

@@ -1,0 +1,31 @@
+generated: '2026-07-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: tosspayments.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  1 23:59:59 2026 GMT
+  hsts: false
+  http_status: 301
+- host: api.tosspayments.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Apr  9 23:59:59 2027 GMT
+  hsts: false
+  http_status: 401
+  note: A bare request to /v1/payments returns HTTP 401 (auth required), confirming the live authenticated REST surface.
+- host: docs.tosspayments.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  6 23:59:59 2026 GMT
+  hsts: false
+  http_status: 308
+domains:
+- domain: tosspayments.com
+  dnssec: false
+  caa: []
+  spf: true
+  spf_policy: '~all'
+  dmarc: true
+  dmarc_policy: none

@@ -1,0 +1,118 @@
+aid: toss-payments
+name: Toss Payments
+review:
+  question: Does Toss Payments expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Toss Payments' public developer surface is
+    a request/response REST API over HTTPS plus outbound webhooks (HTTP POST
+    callbacks). There is no server-push transport (WebSocket or SSE) on Toss
+    Payments' own API to model. Asynchronous results - virtual account deposits
+    (DEPOSIT_CALLBACK), foreign-payment cancellations (CANCEL_STATUS_CHANGED),
+    one-time payment status changes (PAYMENT_STATUS_CHANGED), Brandpay
+    (METHOD_UPDATED, CUSTOMER_STATUS_CHANGED), and payouts (payout.changed,
+    seller.changed) - are all delivered by the merchant registering an HTTPS
+    endpoint that Toss POSTs JSON to, not by a client opening a socket. A webhook
+    catalog could be modeled as AsyncAPI in a future pass, but no wss:// endpoint
+    exists.
+findings:
+  summary: |
+    Toss Payments does not publish a documented public WebSocket API. Toss
+    Payments is a South Korean payment gateway (PG) run by Viva Republica. Its
+    Core API (base https://api.tosspayments.com) is pure request/response REST
+    over HTTPS, authenticated with HTTP Basic using a secret API key (secret key
+    as username, empty password, Base64 encoded). Payment lifecycle events that
+    happen out-of-band - most importantly virtual account deposits - are
+    delivered to the merchant via webhooks (HTTP POST callbacks to a
+    merchant-registered HTTPS URL with automatic retries), not over a WebSocket.
+    No realtime, bidirectional, or streaming ws:// or wss:// endpoint is
+    documented anywhere in the Toss Payments developer center as of the review
+    date.
+  accessModel: |
+    Key-based, with separate test and live environments selected by key prefix.
+    Server-side secret keys are prefixed test_sk_ / test_gsk_ (test) and
+    live_sk_ / live_gsk_ (live) and authenticate the Core API via HTTP Basic
+    (secretKey as username, empty password). Browser-side client keys are
+    prefixed test_ck_ / live_ck_ and are used by the JavaScript SDK / payment
+    widget to open the checkout window; they do not authenticate Core API calls.
+    Key-in payments, manual settlement requests, and marketplace payouts require
+    an additional contract.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.tosspayments.com
+      documented: true
+      note: Core API. Payments/billing/etc under /v1; marketplace payouts under /v2. HTTP Basic auth with a secret key. A bare GET of /v1/payments returns 401.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound HTTP POST callbacks to a merchant-registered HTTPS endpoint (PAYMENT_STATUS_CHANGED, DEPOSIT_CALLBACK, CANCEL_STATUS_CHANGED, METHOD_UPDATED, CUSTOMER_STATUS_CHANGED, payout.changed, seller.changed). Server-to-endpoint HTTP with retries, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Toss Payments Core API or webhook reference as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://api.tosspayments.com/v1/payments/confirm
+    - GET    https://api.tosspayments.com/v1/payments/{paymentKey}
+    - GET    https://api.tosspayments.com/v1/payments/orders/{orderId}
+    - POST   https://api.tosspayments.com/v1/payments/{paymentKey}/cancel
+    - POST   https://api.tosspayments.com/v1/payments/key-in
+    - POST   https://api.tosspayments.com/v1/virtual-accounts
+    - POST   https://api.tosspayments.com/v1/billing/authorizations/issue
+    - POST   https://api.tosspayments.com/v1/billing/authorizations/card
+    - POST   https://api.tosspayments.com/v1/billing/{billingKey}
+    - POST   https://api.tosspayments.com/v1/cash-receipts
+    - GET    https://api.tosspayments.com/v1/cash-receipts
+    - POST   https://api.tosspayments.com/v1/cash-receipts/{receiptKey}/cancel
+    - GET    https://api.tosspayments.com/v1/transactions
+    - GET    https://api.tosspayments.com/v1/settlements
+    - POST   https://api.tosspayments.com/v1/settlements
+    - GET    https://api.tosspayments.com/v2/balances
+    - POST   https://api.tosspayments.com/v2/payouts
+  endpointsModeledOrUncertain:
+    - note: Brandpay is a real, documented Toss Payments product (embeddable easy-pay wallet), but its individual REST endpoints are not modeled in the OpenAPI in this entry - only its webhook events are referenced. The apis.yml Brandpay entry links to documentation rather than OpenAPI paths.
+    - note: The marketplace payouts (v2) product almost certainly includes seller-registration and payout-status-read endpoints beyond the two confirmed here (GET /v2/balances, POST /v2/payouts). Those were referenced but not confirmed at the path level during grounding, so they were deliberately left out of the OpenAPI rather than guessed.
+    - note: A promotions query surface (e.g. GET /v1/promotions) appeared in one grounding pass but could not be confirmed with confidence, so it was omitted from the modeled subset.
+    - note: The v1 method enum values in the OpenAPI Payment schema use the Korean labels Toss returns (카드, 가상계좌, 간편결제, etc.); English equivalents (CARD, VIRTUAL_ACCOUNT, EASY_PAY) are noted in the schema description.
+notes: |
+  Real, richly documented commercial API. The modeled OpenAPI subset is grounded
+  in the public Toss Payments developer center (docs.tosspayments.com) and covers
+  the core payments, billing, virtual account, cash receipt, transaction,
+  settlement, and payout surfaces. Field names follow the Korean documentation,
+  translated where helpful. Pricing (per-transaction fees) is contract-based and
+  not fully public; the finops and plans files model it honestly with
+  reconciled:false.
+sources:
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+    note: Core API reference (Korean). Base host, HTTP Basic auth, payments/billing/virtual-accounts/cash-receipts/transactions/settlements endpoints.
+  - url: https://docs.tosspayments.com/en/api-guide
+    type: Documentation
+    note: English API guide. Confirms HTTP Basic auth (secret key as username, empty password, Base64), test/live secret key prefixes, and payment method enums.
+  - url: https://docs.tosspayments.com/guides/v2/billing/integration-api
+    type: Documentation
+    note: Recurring billing (billing key) integration guide.
+  - url: https://docs.tosspayments.com/en/webhooks
+    type: Documentation
+    note: Webhook event catalog and delivery (HTTP POST, retries). Confirms no WebSocket transport.
+  - url: https://docs.tosspayments.com/en/integration-payouts
+    type: Documentation
+    note: Marketplace payouts (v2) - balances and batched payout requests.
+  - url: https://www.tosspayments.com/about/fee
+    type: Pricing
+    note: PG fee page. Fees are contract- and method-dependent; card fee publicly cited around 4.3% incl. VAT for direct sign-up.
+  - url: https://api.tosspayments.com/v1/payments
+    type: LiveProbe
+    note: Returned HTTP 401 (auth required), confirming the live authenticated REST surface.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Toss Payments' own public API is
+    request/response REST (Core API) plus outbound webhooks. No AsyncAPI document
+    was created because there is no server-push socket transport to model; the
+    webhook catalog could be modeled as AsyncAPI in a later pass but was out of
+    scope for this REST-focused entry.

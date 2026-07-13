@@ -1,0 +1,198 @@
+aid: toss-payments
+url: https://raw.githubusercontent.com/api-evangelist/toss-payments/refs/heads/main/apis.yml
+name: Toss Payments
+kind: company
+description: Toss Payments is a South Korean payment gateway (PG) operated by Viva
+  Republica, the company behind the Toss super-app. Its REST API lets merchants
+  accept and manage online payments across cards, Korean easy-pay wallets (Toss Pay,
+  KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing.
+  The Core API (base https://api.tosspayments.com) covers payment confirmation and
+  cancellation, recurring billing keys, virtual account issuance, cash receipts,
+  transaction and settlement queries, and seller payouts, with asynchronous results
+  delivered by webhooks. Authentication is HTTP Basic using a secret API key.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Payment Gateway
+- South Korea
+- Cards
+- Easy Pay
+- Virtual Account
+- Billing
+- Checkout
+- Fintech
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: toss-payments:toss-payments-payments-api
+  name: Toss Payments Payments API
+  tags:
+  - Payments
+  - Checkout
+  - Cards
+  - Cancellation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/en/api-guide
+    type: Documentation
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  - url: collections/toss-payments.postman_collection.json
+    type: PostmanCollection
+  - url: collections/toss-payments.opencollection.json
+    type: OpenCollection
+  description: Confirm (authorize) a payment created in the checkout window, look up a
+    payment by paymentKey or orderId, and cancel a payment in full or in part. Also
+    supports key-in (manual card entry) payments. Payments move through READY,
+    IN_PROGRESS, WAITING_FOR_DEPOSIT, DONE, CANCELED, PARTIAL_CANCELED, ABORTED, and
+    EXPIRED states.
+- aid: toss-payments:toss-payments-billing-api
+  name: Toss Payments Billing API
+  tags:
+  - Billing
+  - Recurring
+  - Subscriptions
+  - Cards
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/guides/v2/billing/integration-api
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/guides/v2/billing/integration-api
+    type: Documentation
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Issue a billing key for recurring (automatic) payments - from an authKey
+    returned by the billing auth window, or directly from card credentials - and then
+    charge that billing key on demand for subscription and installment billing.
+- aid: toss-payments:toss-payments-virtual-accounts-api
+  name: Toss Payments Virtual Accounts API
+  tags:
+  - Virtual Account
+  - Bank Transfer
+  - Deposit
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Issue a per-order virtual bank account that a customer deposits into.
+    Deposit and cancellation events are delivered asynchronously through the
+    DEPOSIT_CALLBACK webhook, and the resulting payment is retrievable via the
+    Payments API.
+- aid: toss-payments:toss-payments-cash-receipts-api
+  name: Toss Payments Cash Receipts API
+  tags:
+  - Cash Receipt
+  - Tax
+  - South Korea
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Issue, cancel, and query Korean cash receipts (현금영수증) for income
+    deduction or expense evidence, including the customer identity number and receipt
+    key needed for National Tax Service reporting.
+- aid: toss-payments:toss-payments-transactions-api
+  name: Toss Payments Transactions API
+  tags:
+  - Transactions
+  - Reporting
+  - Reconciliation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Query the ledger of approved and canceled transactions across a date
+    range, with cursor pagination (startingAfter, limit), for reconciliation and
+    reporting.
+- aid: toss-payments:toss-payments-settlements-api
+  name: Toss Payments Settlements API
+  tags:
+  - Settlements
+  - Payouts
+  - Reconciliation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/reference
+    type: APIReference
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Query settlement records by sold date or paid-out date with the fees and
+    payout amounts per transaction, and (under an additional contract) request manual
+    settlement for a given paymentKey.
+- aid: toss-payments:toss-payments-payouts-api
+  name: Toss Payments Payouts API
+  tags:
+  - Payouts
+  - Marketplace
+  - Sellers
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/en/integration-payouts
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/en/integration-payouts
+    type: Documentation
+  - url: openapi/toss-payments-openapi.yml
+    type: OpenAPI
+  description: Marketplace payouts (v2) - check the available balance and send batched
+    payout requests to sellers, immediately or on a schedule. Seller and payout status
+    changes are delivered via the seller.changed and payout.changed webhooks.
+- aid: toss-payments:toss-payments-brandpay-api
+  name: Toss Payments Brandpay API
+  tags:
+  - Brandpay
+  - Easy Pay
+  - Wallet
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.tosspayments.com/reference/brandpay
+  baseURL: https://api.tosspayments.com
+  properties:
+  - url: https://docs.tosspayments.com/reference/brandpay
+    type: Documentation
+  description: Brandpay is Toss Payments' embeddable in-merchant easy-pay wallet, letting
+    customers register payment methods once and reuse them. Method and customer status
+    changes are pushed via the METHOD_UPDATED and CUSTOMER_STATUS_CHANGED webhooks.
+    (Documented product; individual Brandpay endpoints are not modeled in the OpenAPI
+    in this entry.)
+common:
+- type: DomainSecurity
+  url: security/toss-payments-domain-security.yml
+- type: Authentication
+  url: authentication/toss-payments-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/tosspayments
+- type: Website
+  url: https://www.tosspayments.com
+- type: Documentation
+  url: https://docs.tosspayments.com/en
+- type: Plans
+  url: plans/toss-payments-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/toss-payments-rate-limits.yml
+- type: FinOps
+  url: finops/toss-payments-finops.yml
+- url: https://www.tosspayments.com/blog
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

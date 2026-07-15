@@ -175,6 +175,8 @@ apis:
     (Documented product; individual Brandpay endpoints are not modeled in the OpenAPI
     in this entry.)
 common:
+- type: AgenticAccess
+  url: agentic-access/toss-payments-agentic-access.yml
 - type: DomainSecurity
   url: security/toss-payments-domain-security.yml
 - type: Authentication

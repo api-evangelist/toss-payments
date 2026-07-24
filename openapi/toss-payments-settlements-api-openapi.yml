@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Toss Payments Core Billing Settlements API
+  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  version: '2022-11-16'
+  contact:
+    name: Toss Payments Developer Center
+    url: https://docs.tosspayments.com/en
+  termsOfService: https://www.tosspayments.com
+servers:
+- url: https://api.tosspayments.com
+  description: Toss Payments Core API (test and live selected by secret key prefix)
+security:
+- basicAuth: []
+tags:
+- name: Settlements
+  description: Settlement queries and manual settlement requests.
+paths:
+  /v1/settlements:
+    get:
+      operationId: listSettlements
+      tags:
+      - Settlements
+      summary: Query settlements
+      description: Queries settlement records over a date range by sold date or paid-out date, with page-based pagination.
+      parameters:
+      - name: startDate
+        in: query
+        required: true
+        description: Start date (YYYY-MM-DD).
+        schema:
+          type: string
+          format: date
+      - name: endDate
+        in: query
+        required: true
+        description: End date (YYYY-MM-DD).
+        schema:
+          type: string
+          format: date
+      - name: dateType
+        in: query
+        required: false
+        description: Whether the date range applies to soldDate or paidOutDate.
+        schema:
+          type: string
+          enum:
+          - soldDate
+          - paidOutDate
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: A list of Settlement objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Settlement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: requestSettlement
+      tags:
+      - Settlements
+      summary: Request a manual settlement
+      description: Requests manual settlement for one or more paymentKeys. Available only under an additional contract.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - paymentKey
+              properties:
+                paymentKey:
+                  type: string
+                  description: The paymentKey to settle manually.
+      responses:
+        '200':
+          description: Manual settlement request result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settlement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
+    Settlement:
+      type: object
+      properties:
+        paymentKey:
+          type: string
+        transactionKey:
+          type: string
+        orderId:
+          type: string
+        method:
+          type: string
+        amount:
+          type: integer
+        interestFee:
+          type: integer
+        supplyAmount:
+          type: integer
+        vat:
+          type: integer
+        fee:
+          type: integer
+        payOutAmount:
+          type: integer
+        soldDate:
+          type: string
+          format: date
+        paidOutDate:
+          type: string
+          format: date
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Toss Payments secret key as the username and leave the password empty, then Base64 encode `secretKey:` for the Authorization header. Test keys are prefixed `test_sk_` / `test_gsk_` and live keys `live_sk_` / `live_gsk_`.

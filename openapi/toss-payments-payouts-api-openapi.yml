@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: Toss Payments Core Billing Payouts API
+  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  version: '2022-11-16'
+  contact:
+    name: Toss Payments Developer Center
+    url: https://docs.tosspayments.com/en
+  termsOfService: https://www.tosspayments.com
+servers:
+- url: https://api.tosspayments.com
+  description: Toss Payments Core API (test and live selected by secret key prefix)
+security:
+- basicAuth: []
+tags:
+- name: Payouts
+  description: Marketplace balance and seller payouts (v2).
+paths:
+  /v2/balances:
+    get:
+      operationId: getPayoutBalance
+      tags:
+      - Payouts
+      summary: Retrieve payout balance
+      description: Returns the funds available for payouts. Part of the marketplace payouts (v2) product, which requires an additional contract.
+      responses:
+        '200':
+          description: The available balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/payouts:
+    post:
+      operationId: requestPayouts
+      tags:
+      - Payouts
+      summary: Request payouts
+      description: Sends a batch of payout requests to sellers (up to 100 per call). Payouts can be immediate or scheduled. Status changes are delivered via the payout.changed webhook.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutRequest'
+      responses:
+        '200':
+          description: The accepted payout requests.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payout'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    PayoutRequest:
+      type: object
+      required:
+      - payouts
+      properties:
+        payouts:
+          type: array
+          items:
+            type: object
+            required:
+            - refPayoutId
+            - destination
+            - amount
+            properties:
+              refPayoutId:
+                type: string
+                description: Merchant-assigned payout reference ID.
+              destination:
+                type: string
+                description: The seller/destination identifier.
+              scheduleType:
+                type: string
+                enum:
+                - SCHEDULED
+                - EXPRESS
+              payoutDate:
+                type: string
+                format: date
+              amount:
+                type: integer
+              transactionDescription:
+                type: string
+    Payout:
+      type: object
+      properties:
+        id:
+          type: string
+        refPayoutId:
+          type: string
+        destination:
+          type: string
+        scheduleType:
+          type: string
+        payoutDate:
+          type: string
+          format: date
+        amount:
+          type: integer
+        status:
+          type: string
+    Balance:
+      type: object
+      properties:
+        availableAmount:
+          type: integer
+        pendingAmount:
+          type: integer
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Toss Payments secret key as the username and leave the password empty, then Base64 encode `secretKey:` for the Authorization header. Test keys are prefixed `test_sk_` / `test_gsk_` and live keys `live_sk_` / `live_gsk_`.

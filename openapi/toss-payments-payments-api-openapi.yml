@@ -1,0 +1,398 @@
+openapi: 3.0.3
+info:
+  title: Toss Core Billing Payments API
+  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  version: '2022-11-16'
+  contact:
+    name: Toss Payments Developer Center
+    url: https://docs.tosspayments.com/en
+  termsOfService: https://www.tosspayments.com
+servers:
+- url: https://api.tosspayments.com
+  description: Toss Payments Core API (test and live selected by secret key prefix)
+security:
+- basicAuth: []
+tags:
+- name: Payments
+  description: Confirm, retrieve, and cancel payments.
+paths:
+  /v1/payments/confirm:
+    post:
+      operationId: confirmPayment
+      tags:
+      - Payments
+      summary: Confirm a payment
+      description: Authorizes (approves) a payment that was created in the Toss Payments checkout window. The client supplies the paymentKey, orderId, and amount returned by the SDK success callback; the server validates that the amount matches and finalizes the transaction.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmPaymentRequest'
+      responses:
+        '200':
+          description: The approved Payment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /v1/payments/key-in:
+    post:
+      operationId: keyInPayment
+      tags:
+      - Payments
+      summary: Key-in (manual card) payment
+      description: Approves a payment directly from card credentials (card number, expiry, and identity number) without the checkout window. Requires an additional contract with Toss Payments.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyInPaymentRequest'
+      responses:
+        '200':
+          description: The approved Payment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/payments/{paymentKey}:
+    parameters:
+    - $ref: '#/components/parameters/PaymentKey'
+    get:
+      operationId: getPayment
+      tags:
+      - Payments
+      summary: Get a payment by paymentKey
+      description: Retrieves a Payment object by its paymentKey.
+      responses:
+        '200':
+          description: The requested Payment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/orders/{orderId}:
+    parameters:
+    - name: orderId
+      in: path
+      required: true
+      description: The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`).
+      schema:
+        type: string
+    get:
+      operationId: getPaymentByOrderId
+      tags:
+      - Payments
+      summary: Get a payment by orderId
+      description: Retrieves a Payment object by the merchant's orderId.
+      responses:
+        '200':
+          description: The requested Payment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/payments/{paymentKey}/cancel:
+    parameters:
+    - $ref: '#/components/parameters/PaymentKey'
+    post:
+      operationId: cancelPayment
+      tags:
+      - Payments
+      summary: Cancel a payment
+      description: Cancels a payment in full, or partially when cancelAmount is provided. For virtual account payments a refundReceiveAccount is required to return funds to the customer.
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: false
+        description: Optional client-generated key to make the cancellation idempotent.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelPaymentRequest'
+      responses:
+        '200':
+          description: The updated Payment object reflecting the cancellation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Forbidden:
+      description: The key is not permitted to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    KeyInPaymentRequest:
+      type: object
+      required:
+      - amount
+      - orderId
+      - orderName
+      - cardNumber
+      - cardExpirationYear
+      - cardExpirationMonth
+      properties:
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        cardNumber:
+          type: string
+        cardExpirationYear:
+          type: string
+        cardExpirationMonth:
+          type: string
+        customerIdentityNumber:
+          type: string
+          description: Birth date (YYMMDD) or business registration number.
+        cardInstallmentPlan:
+          type: integer
+          description: Number of installment months (0 for lump sum).
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
+    ConfirmPaymentRequest:
+      type: object
+      required:
+      - paymentKey
+      - orderId
+      - amount
+      properties:
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        amount:
+          type: integer
+          description: The amount to approve; must match the amount created in the window.
+    CancelPaymentRequest:
+      type: object
+      required:
+      - cancelReason
+      properties:
+        cancelReason:
+          type: string
+        cancelAmount:
+          type: integer
+          description: Amount to cancel for a partial cancellation; omit to cancel in full.
+        refundReceiveAccount:
+          $ref: '#/components/schemas/RefundReceiveAccount'
+        taxFreeAmount:
+          type: integer
+        currency:
+          type: string
+    VirtualAccount:
+      type: object
+      properties:
+        accountType:
+          type: string
+          enum:
+          - 일반
+          - 고정
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+        customerName:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        refundStatus:
+          type: string
+        settlementStatus:
+          type: string
+    Payment:
+      type: object
+      description: A Toss Payments Payment object.
+      properties:
+        version:
+          type: string
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        orderName:
+          type: string
+        status:
+          type: string
+          enum:
+          - READY
+          - IN_PROGRESS
+          - WAITING_FOR_DEPOSIT
+          - DONE
+          - CANCELED
+          - PARTIAL_CANCELED
+          - ABORTED
+          - EXPIRED
+        method:
+          type: string
+          enum:
+          - 카드
+          - 가상계좌
+          - 간편결제
+          - 휴대폰
+          - 계좌이체
+          - 문화상품권
+          - 도서문화상품권
+          - 게임문화상품권
+          description: Payment method (Korean label). English enum equivalents include CARD, VIRTUAL_ACCOUNT, EASY_PAY, MOBILE_PHONE, TRANSFER.
+        totalAmount:
+          type: integer
+        balanceAmount:
+          type: integer
+        suppliedAmount:
+          type: integer
+        vat:
+          type: integer
+        taxFreeAmount:
+          type: integer
+        currency:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+        approvedAt:
+          type: string
+          format: date-time
+        card:
+          $ref: '#/components/schemas/Card'
+        virtualAccount:
+          $ref: '#/components/schemas/VirtualAccount'
+        easyPay:
+          type: object
+          properties:
+            provider:
+              type: string
+            amount:
+              type: integer
+            discountAmount:
+              type: integer
+        cancels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cancel'
+    Card:
+      type: object
+      properties:
+        company:
+          type: string
+        number:
+          type: string
+        installmentPlanMonths:
+          type: integer
+        approveNo:
+          type: string
+        cardType:
+          type: string
+          enum:
+          - 신용
+          - 체크
+          - 기프트
+        ownerType:
+          type: string
+          enum:
+          - 개인
+          - 법인
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
+    RefundReceiveAccount:
+      type: object
+      description: Refund destination account, required for virtual account cancellations.
+      required:
+      - bank
+      - accountNumber
+      - holderName
+      properties:
+        bank:
+          type: string
+          description: Bank code.
+        accountNumber:
+          type: string
+        holderName:
+          type: string
+  parameters:
+    PaymentKey:
+      name: paymentKey
+      in: path
+      required: true
+      description: The unique key identifying the payment (max 200 chars).
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Toss Payments secret key as the username and leave the password empty, then Base64 encode `secretKey:` for the Authorization header. Test keys are prefixed `test_sk_` / `test_gsk_` and live keys `live_sk_` / `live_gsk_`.

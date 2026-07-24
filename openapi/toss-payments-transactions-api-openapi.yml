@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Toss Payments Core Billing Transactions API
+  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  version: '2022-11-16'
+  contact:
+    name: Toss Payments Developer Center
+    url: https://docs.tosspayments.com/en
+  termsOfService: https://www.tosspayments.com
+servers:
+- url: https://api.tosspayments.com
+  description: Toss Payments Core API (test and live selected by secret key prefix)
+security:
+- basicAuth: []
+tags:
+- name: Transactions
+  description: Transaction ledger queries.
+paths:
+  /v1/transactions:
+    get:
+      operationId: listTransactions
+      tags:
+      - Transactions
+      summary: Query transactions
+      description: Queries the transaction ledger over a date range, with cursor pagination (up to 5000 records per page).
+      parameters:
+      - name: startDate
+        in: query
+        required: true
+        description: Start datetime (ISO 8601) of the query range.
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: true
+        description: End datetime (ISO 8601) of the query range.
+        schema:
+          type: string
+          format: date-time
+      - name: startingAfter
+        in: query
+        required: false
+        description: Cursor - return records after this transactionKey.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maximum number of records to return (up to 5000).
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: A list of Transaction objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        transactionKey:
+          type: string
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        method:
+          type: string
+        customerKey:
+          type: string
+        amount:
+          type: integer
+        transactionAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
+  responses:
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Toss Payments secret key as the username and leave the password empty, then Base64 encode `secretKey:` for the Authorization header. Test keys are prefixed `test_sk_` / `test_gsk_` and live keys `live_sk_` / `live_gsk_`.

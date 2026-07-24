@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: Toss Payments Core Billing Virtual Accounts API
+  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  version: '2022-11-16'
+  contact:
+    name: Toss Payments Developer Center
+    url: https://docs.tosspayments.com/en
+  termsOfService: https://www.tosspayments.com
+servers:
+- url: https://api.tosspayments.com
+  description: Toss Payments Core API (test and live selected by secret key prefix)
+security:
+- basicAuth: []
+tags:
+- name: Virtual Accounts
+  description: Per-order virtual bank account issuance.
+paths:
+  /v1/virtual-accounts:
+    post:
+      operationId: createVirtualAccount
+      tags:
+      - Virtual Accounts
+      summary: Issue a virtual account
+      description: Issues a per-order virtual bank account for the customer to deposit into. Deposit and cancellation events arrive via the DEPOSIT_CALLBACK webhook.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualAccountRequest'
+      responses:
+        '200':
+          description: The Payment object containing the issued virtual account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
+    VirtualAccountRequest:
+      type: object
+      required:
+      - amount
+      - orderId
+      - orderName
+      - customerName
+      - bank
+      properties:
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        customerName:
+          type: string
+        bank:
+          type: string
+          description: Bank code for the virtual account.
+        validHours:
+          type: integer
+          description: Hours the virtual account remains valid.
+        dueDate:
+          type: string
+          format: date-time
+        cashReceipt:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - 소득공제
+              - 지출증빙
+              - 미발행
+    VirtualAccount:
+      type: object
+      properties:
+        accountType:
+          type: string
+          enum:
+          - 일반
+          - 고정
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+        customerName:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        refundStatus:
+          type: string
+        settlementStatus:
+          type: string
+    Payment:
+      type: object
+      description: A Toss Payments Payment object.
+      properties:
+        version:
+          type: string
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        orderName:
+          type: string
+        status:
+          type: string
+          enum:
+          - READY
+          - IN_PROGRESS
+          - WAITING_FOR_DEPOSIT
+          - DONE
+          - CANCELED
+          - PARTIAL_CANCELED
+          - ABORTED
+          - EXPIRED
+        method:
+          type: string
+          enum:
+          - 카드
+          - 가상계좌
+          - 간편결제
+          - 휴대폰
+          - 계좌이체
+          - 문화상품권
+          - 도서문화상품권
+          - 게임문화상품권
+          description: Payment method (Korean label). English enum equivalents include CARD, VIRTUAL_ACCOUNT, EASY_PAY, MOBILE_PHONE, TRANSFER.
+        totalAmount:
+          type: integer
+        balanceAmount:
+          type: integer
+        suppliedAmount:
+          type: integer
+        vat:
+          type: integer
+        taxFreeAmount:
+          type: integer
+        currency:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+        approvedAt:
+          type: string
+          format: date-time
+        card:
+          $ref: '#/components/schemas/Card'
+        virtualAccount:
+          $ref: '#/components/schemas/VirtualAccount'
+        easyPay:
+          type: object
+          properties:
+            provider:
+              type: string
+            amount:
+              type: integer
+            discountAmount:
+              type: integer
+        cancels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cancel'
+    Card:
+      type: object
+      properties:
+        company:
+          type: string
+        number:
+          type: string
+        installmentPlanMonths:
+          type: integer
+        approveNo:
+          type: string
+        cardType:
+          type: string
+          enum:
+          - 신용
+          - 체크
+          - 기프트
+        ownerType:
+          type: string
+          enum:
+          - 개인
+          - 법인
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Toss Payments secret key as the username and leave the password empty, then Base64 encode `secretKey:` for the Authorization header. Test keys are prefixed `test_sk_` / `test_gsk_` and live keys `live_sk_` / `live_gsk_`.

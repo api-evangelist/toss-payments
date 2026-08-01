@@ -1,0 +1,26 @@
+{
+  "provider": "toss-payments",
+  "sources": [
+    "toss-payments-billing-api-openapi.yml",
+    "toss-payments-cash-receipts-api-openapi.yml",
+    "toss-payments-payments-api-openapi.yml",
+    "toss-payments-payouts-api-openapi.yml",
+    "toss-payments-settlements-api-openapi.yml",
+    "toss-payments-transactions-api-openapi.yml",
+    "toss-payments-virtual-accounts-api-openapi.yml"
+  ],
+  "outputs": [
+    "toss-payments-billing-api-openapi.yml",
+    "toss-payments-cash-receipts-api-openapi.yml",
+    "toss-payments-payments-api-openapi.yml",
+    "toss-payments-payouts-api-openapi.yml",
+    "toss-payments-settlements-api-openapi.yml",
+    "toss-payments-transactions-api-openapi.yml",
+    "toss-payments-virtual-accounts-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

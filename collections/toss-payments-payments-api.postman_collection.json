@@ -1,0 +1,1265 @@
+{
+  "item": [
+    {
+      "id": "37f0df67-d0df-4b0d-b36f-620acf7e439a",
+      "name": "Payments",
+      "description": {
+        "content": "Confirm, retrieve, and cancel payments.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e2961f7c-13cf-4ea2-af66-a2228294d5b5",
+          "name": "Confirm a payment",
+          "request": {
+            "name": "Confirm a payment",
+            "description": {
+              "content": "Authorizes (approves) a payment that was created in the Toss Payments checkout window. The client supplies the paymentKey, orderId, and amount returned by the SDK success callback; the server validates that the amount matches and finalizes the transaction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payments",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentKey\": \"<string>\",\n  \"orderId\": \"<string>\",\n  \"amount\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4d135c37-f504-475c-9281-360f52c06d2d",
+              "name": "The approved Payment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentKey\": \"<string>\",\n  \"orderId\": \"<string>\",\n  \"amount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"ABORTED\",\n  \"method\": \"카드\",\n  \"totalAmount\": 5396,\n  \"balanceAmount\": 1894,\n  \"suppliedAmount\": 7005,\n  \"vat\": 4402,\n  \"taxFreeAmount\": 2407,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1983-05-23T11:20:38.683Z\",\n  \"approvedAt\": \"1963-10-14T16:13:46.113Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 9551,\n    \"approveNo\": \"string\",\n    \"cardType\": \"기프트\",\n    \"ownerType\": \"법인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"일반\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"2021-05-26T02:46:20.787Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 5822,\n    \"discountAmount\": 4969\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 4672,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"2001-02-08T22:53:19.112Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 7106,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"2024-03-16T20:21:08.555Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12406a18-e509-4ba5-89f1-2f67c711654e",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentKey\": \"<string>\",\n  \"orderId\": \"<string>\",\n  \"amount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca9ff0be-d964-4cfc-9737-f5803a2c46c9",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentKey\": \"<string>\",\n  \"orderId\": \"<string>\",\n  \"amount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2664b6ff-a249-4809-ac70-5c11cda09557",
+              "name": "The key is not permitted to perform this action.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"paymentKey\": \"<string>\",\n  \"orderId\": \"<string>\",\n  \"amount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b709b0e-0014-4b7b-977e-91d9f3c8b399",
+          "name": "Key-in (manual card) payment",
+          "request": {
+            "name": "Key-in (manual card) payment",
+            "description": {
+              "content": "Approves a payment directly from card credentials (card number, expiry, and identity number) without the checkout window. Requires an additional contract with Toss Payments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payments",
+                "key-in"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\",\n  \"cardInstallmentPlan\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eb71b185-7db6-4db2-9eb5-d1e765ba12ad",
+              "name": "The approved Payment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "key-in"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\",\n  \"cardInstallmentPlan\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"ABORTED\",\n  \"method\": \"가상계좌\",\n  \"totalAmount\": 9065,\n  \"balanceAmount\": 1324,\n  \"suppliedAmount\": 775,\n  \"vat\": 8896,\n  \"taxFreeAmount\": 8919,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1963-12-30T23:01:02.715Z\",\n  \"approvedAt\": \"1979-06-14T10:14:49.875Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 4150,\n    \"approveNo\": \"string\",\n    \"cardType\": \"체크\",\n    \"ownerType\": \"법인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"일반\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"2001-03-30T01:15:25.673Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 1370,\n    \"discountAmount\": 9425\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 7981,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1955-12-11T10:43:17.666Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 1474,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1989-06-04T06:17:39.583Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab0006a8-33b8-4a23-a509-d39da0139e47",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "key-in"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\",\n  \"cardInstallmentPlan\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17f598de-e450-4009-8cdb-0d0e7dd6c33d",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "key-in"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\",\n  \"cardInstallmentPlan\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e567ea1d-c208-4df6-8ed3-7b6677e5a061",
+          "name": "Get a payment by paymentKey",
+          "request": {
+            "name": "Get a payment by paymentKey",
+            "description": {
+              "content": "Retrieves a Payment object by its paymentKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payments",
+                ":paymentKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentKey",
+                  "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00aff947-7de1-47a7-829d-d154298061e6",
+              "name": "The requested Payment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"ABORTED\",\n  \"method\": \"가상계좌\",\n  \"totalAmount\": 9065,\n  \"balanceAmount\": 1324,\n  \"suppliedAmount\": 775,\n  \"vat\": 8896,\n  \"taxFreeAmount\": 8919,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1963-12-30T23:01:02.715Z\",\n  \"approvedAt\": \"1979-06-14T10:14:49.875Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 4150,\n    \"approveNo\": \"string\",\n    \"cardType\": \"체크\",\n    \"ownerType\": \"법인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"일반\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"2001-03-30T01:15:25.673Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 1370,\n    \"discountAmount\": 9425\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 7981,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1955-12-11T10:43:17.666Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 1474,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1989-06-04T06:17:39.583Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c71b7f95-3400-49da-ad68-45a59d5bfe99",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "600bdd90-69c9-472b-95ac-8620d0a6cb39",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "478ab38f-8c87-407e-a722-97ce870b4784",
+          "name": "Get a payment by orderId",
+          "request": {
+            "name": "Get a payment by orderId",
+            "description": {
+              "content": "Retrieves a Payment object by the merchant's orderId.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payments",
+                "orders",
+                ":orderId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "orderId",
+                  "description": "(Required) The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "215f9714-02a5-4338-8a36-d168882597e5",
+              "name": "The requested Payment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "orders",
+                    ":orderId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "orderId",
+                      "description": "(Required) The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"ABORTED\",\n  \"method\": \"가상계좌\",\n  \"totalAmount\": 9065,\n  \"balanceAmount\": 1324,\n  \"suppliedAmount\": 775,\n  \"vat\": 8896,\n  \"taxFreeAmount\": 8919,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1963-12-30T23:01:02.715Z\",\n  \"approvedAt\": \"1979-06-14T10:14:49.875Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 4150,\n    \"approveNo\": \"string\",\n    \"cardType\": \"체크\",\n    \"ownerType\": \"법인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"일반\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"2001-03-30T01:15:25.673Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 1370,\n    \"discountAmount\": 9425\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 7981,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1955-12-11T10:43:17.666Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 1474,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1989-06-04T06:17:39.583Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "170380b5-dde9-4c2f-8fe8-af94f1869811",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "orders",
+                    ":orderId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "orderId",
+                      "description": "(Required) The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e826be2-9e82-4b0f-8eea-4e1ce9c6d2ea",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    "orders",
+                    ":orderId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "orderId",
+                      "description": "(Required) The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6cdc6d06-2754-402d-a7cd-011a6ed02dbf",
+          "name": "Cancel a payment",
+          "request": {
+            "name": "Cancel a payment",
+            "description": {
+              "content": "Cancels a payment in full, or partially when cancelAmount is provided. For virtual account payments a refundReceiveAccount is required to return funds to the customer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "payments",
+                ":paymentKey",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentKey",
+                  "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional client-generated key to make the cancellation idempotent.",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancelReason\": \"<string>\",\n  \"cancelAmount\": \"<integer>\",\n  \"refundReceiveAccount\": {\n    \"bank\": \"<string>\",\n    \"accountNumber\": \"<string>\",\n    \"holderName\": \"<string>\"\n  },\n  \"taxFreeAmount\": \"<integer>\",\n  \"currency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2ed264e8-7553-4554-87c2-625c8e06d0f5",
+              "name": "The updated Payment object reflecting the cancellation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional client-generated key to make the cancellation idempotent.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancelReason\": \"<string>\",\n  \"cancelAmount\": \"<integer>\",\n  \"refundReceiveAccount\": {\n    \"bank\": \"<string>\",\n    \"accountNumber\": \"<string>\",\n    \"holderName\": \"<string>\"\n  },\n  \"taxFreeAmount\": \"<integer>\",\n  \"currency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"ABORTED\",\n  \"method\": \"가상계좌\",\n  \"totalAmount\": 9065,\n  \"balanceAmount\": 1324,\n  \"suppliedAmount\": 775,\n  \"vat\": 8896,\n  \"taxFreeAmount\": 8919,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1963-12-30T23:01:02.715Z\",\n  \"approvedAt\": \"1979-06-14T10:14:49.875Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 4150,\n    \"approveNo\": \"string\",\n    \"cardType\": \"체크\",\n    \"ownerType\": \"법인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"일반\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"2001-03-30T01:15:25.673Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 1370,\n    \"discountAmount\": 9425\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 7981,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1955-12-11T10:43:17.666Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 1474,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1989-06-04T06:17:39.583Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55c419ca-6247-4fdb-ade1-547db87e1246",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional client-generated key to make the cancellation idempotent.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancelReason\": \"<string>\",\n  \"cancelAmount\": \"<integer>\",\n  \"refundReceiveAccount\": {\n    \"bank\": \"<string>\",\n    \"accountNumber\": \"<string>\",\n    \"holderName\": \"<string>\"\n  },\n  \"taxFreeAmount\": \"<integer>\",\n  \"currency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb185270-a7a3-49b0-9257-592e4acc9e26",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional client-generated key to make the cancellation idempotent.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancelReason\": \"<string>\",\n  \"cancelAmount\": \"<integer>\",\n  \"refundReceiveAccount\": {\n    \"bank\": \"<string>\",\n    \"accountNumber\": \"<string>\",\n    \"holderName\": \"<string>\"\n  },\n  \"taxFreeAmount\": \"<integer>\",\n  \"currency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "542a5f3e-90b2-4387-9fcd-3f11970bc38e",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "payments",
+                    ":paymentKey",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentKey",
+                      "description": "(Required) The unique key identifying the payment (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional client-generated key to make the cancellation idempotent.",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cancelReason\": \"<string>\",\n  \"cancelAmount\": \"<integer>\",\n  \"refundReceiveAccount\": {\n    \"bank\": \"<string>\",\n    \"accountNumber\": \"<string>\",\n    \"holderName\": \"<string>\"\n  },\n  \"taxFreeAmount\": \"<integer>\",\n  \"currency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tosspayments.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7b3ea881-d0d8-4192-850b-eecbea6da31f",
+    "name": "Toss Core Billing Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.\n\nContact Support:\n Name: Toss Payments Developer Center",
+      "type": "text/plain"
+    }
+  }
+}

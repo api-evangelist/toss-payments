@@ -1,0 +1,712 @@
+{
+  "item": [
+    {
+      "id": "ccf90095-40e2-4926-b0d8-f9ff18630cb2",
+      "name": "Billing",
+      "description": {
+        "content": "Recurring (automatic) payments via billing keys.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dd00cdad-c5b2-4169-b9aa-e02a776435ad",
+          "name": "Issue a billing key from an authKey",
+          "request": {
+            "name": "Issue a billing key from an authKey",
+            "description": {
+              "content": "Issues a billing key for recurring payments from the authKey returned by the billing authorization window and the merchant's customerKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "billing",
+                "authorizations",
+                "issue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authKey\": \"<string>\",\n  \"customerKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a0533cd-9436-4990-943b-33bcb690e3df",
+              "name": "The issued Billing object with billingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authKey\": \"<string>\",\n  \"customerKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"billingKey\": \"string\",\n  \"customerKey\": \"string\",\n  \"method\": \"string\",\n  \"cardCompany\": \"string\",\n  \"cardNumber\": \"string\",\n  \"authenticatedAt\": \"1962-02-13T04:12:49.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba199389-da35-4c29-a0fa-899a12d02884",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authKey\": \"<string>\",\n  \"customerKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a276a715-bc33-4cf5-950f-d27d1e6f224a",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "issue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authKey\": \"<string>\",\n  \"customerKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "abbf6e75-9dab-4d14-be25-71eb5258bcc7",
+          "name": "Issue a billing key from card credentials",
+          "request": {
+            "name": "Issue a billing key from card credentials",
+            "description": {
+              "content": "Issues a billing key directly from card credentials without the authorization window. Requires an additional contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "billing",
+                "authorizations",
+                "card"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerKey\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2d4ffe67-3382-47b5-8505-e1a254cbabaf",
+              "name": "The issued Billing object with billingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "card"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"billingKey\": \"string\",\n  \"customerKey\": \"string\",\n  \"method\": \"string\",\n  \"cardCompany\": \"string\",\n  \"cardNumber\": \"string\",\n  \"authenticatedAt\": \"1962-02-13T04:12:49.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a4e0b20-41cb-4509-9843-c1c7d07dc6eb",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "card"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91d61935-913e-4190-b62b-562a3f8d7fa6",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    "authorizations",
+                    "card"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"cardNumber\": \"<string>\",\n  \"cardExpirationYear\": \"<string>\",\n  \"cardExpirationMonth\": \"<string>\",\n  \"customerIdentityNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1473157b-c336-4127-b9e3-d53a32217912",
+          "name": "Charge a billing key",
+          "request": {
+            "name": "Charge a billing key",
+            "description": {
+              "content": "Approves a recurring payment using a previously issued billing key and the matching customerKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "billing",
+                ":billingKey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "billingKey",
+                  "description": "(Required) The billing key issued for the customer (max 200 chars)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerKey\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerEmail\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"taxFreeAmount\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "90d52b2f-5a80-4351-9102-6c413da3f811",
+              "name": "The approved Payment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    ":billingKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "billingKey",
+                      "description": "(Required) The billing key issued for the customer (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerEmail\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"taxFreeAmount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"READY\",\n  \"method\": \"가상계좌\",\n  \"totalAmount\": 3720,\n  \"balanceAmount\": 9629,\n  \"suppliedAmount\": 6018,\n  \"vat\": 5904,\n  \"taxFreeAmount\": 4026,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1977-10-02T09:27:26.306Z\",\n  \"approvedAt\": \"2000-04-14T21:54:21.874Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 8597,\n    \"approveNo\": \"string\",\n    \"cardType\": \"신용\",\n    \"ownerType\": \"개인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"고정\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"1976-05-02T21:55:37.732Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 4181,\n    \"discountAmount\": 1695\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 497,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"2023-10-31T05:31:17.355Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 5974,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"2008-12-13T04:52:07.447Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02a378bd-e112-40f6-92e1-5f6b9aac27bc",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    ":billingKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "billingKey",
+                      "description": "(Required) The billing key issued for the customer (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerEmail\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"taxFreeAmount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c43a2fe-f6c4-4890-b9c9-eacd52ced4b7",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "billing",
+                    ":billingKey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "billingKey",
+                      "description": "(Required) The billing key issued for the customer (max 200 chars)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerKey\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerEmail\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"taxFreeAmount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tosspayments.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b270c0de-a2ae-4f4a-902c-13036fed14cb",
+    "name": "Toss Payments Core Billing API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.\n\nContact Support:\n Name: Toss Payments Developer Center",
+      "type": "text/plain"
+    }
+  }
+}

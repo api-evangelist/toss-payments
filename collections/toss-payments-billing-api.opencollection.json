@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Payments Core Billing API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue a billing key from an authKey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/authorizations/issue",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a billing key for recurring payments from the authKey returned by the billing authorization window and the merchant's customerKey."
+        },
+        {
+          "info": {
+            "name": "Issue a billing key from card credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/authorizations/card",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a billing key directly from card credentials without the authorization window. Requires an additional contract."
+        },
+        {
+          "info": {
+            "name": "Charge a billing key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/billing/:billingKey",
+            "params": [
+              {
+                "name": "billingKey",
+                "value": "",
+                "type": "path",
+                "description": "The billing key issued for the customer (max 200 chars)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves a recurring payment using a previously issued billing key and the matching customerKey."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

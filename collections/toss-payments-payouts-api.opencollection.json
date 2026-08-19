@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Payments Core Billing Payouts API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payouts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve payout balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v2/balances"
+          },
+          "docs": "Returns the funds available for payouts. Part of the marketplace payouts (v2) product, which requires an additional contract."
+        },
+        {
+          "info": {
+            "name": "Request payouts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v2/payouts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a batch of payout requests to sellers (up to 100 per call). Payouts can be immediate or scheduled. Status changes are delivered via the payout.changed webhook."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

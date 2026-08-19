@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Core Billing Payments API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Confirm a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/confirm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authorizes (approves) a payment that was created in the Toss Payments checkout window. The client supplies the paymentKey, orderId, and amount returned by the SDK success callback; the server validates that the amount matches and finalizes the transaction."
+        },
+        {
+          "info": {
+            "name": "Key-in (manual card) payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/key-in",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves a payment directly from card credentials (card number, expiry, and identity number) without the checkout window. Requires an additional contract with Toss Payments."
+        },
+        {
+          "info": {
+            "name": "Get a payment by paymentKey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/payments/:paymentKey",
+            "params": [
+              {
+                "name": "paymentKey",
+                "value": "",
+                "type": "path",
+                "description": "The unique key identifying the payment (max 200 chars)."
+              }
+            ]
+          },
+          "docs": "Retrieves a Payment object by its paymentKey."
+        },
+        {
+          "info": {
+            "name": "Get a payment by orderId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/payments/orders/:orderId",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-assigned order ID (6-64 chars; alphanumeric, `-`, `_`)."
+              }
+            ]
+          },
+          "docs": "Retrieves a Payment object by the merchant's orderId."
+        },
+        {
+          "info": {
+            "name": "Cancel a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/payments/:paymentKey/cancel",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "paymentKey",
+                "value": "",
+                "type": "path",
+                "description": "The unique key identifying the payment (max 200 chars)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels a payment in full, or partially when cancelAmount is provided. For virtual account payments a refundReceiveAccount is required to return funds to the customer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

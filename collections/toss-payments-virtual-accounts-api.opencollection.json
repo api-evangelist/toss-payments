@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Payments Core Billing Virtual Accounts API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Virtual Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue a virtual account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/virtual-accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a per-order virtual bank account for the customer to deposit into. Deposit and cancellation events arrive via the DEPOSIT_CALLBACK webhook."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

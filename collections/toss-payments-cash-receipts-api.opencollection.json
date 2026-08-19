@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Toss Payments Core Billing Cash Receipts API",
+    "version": "2022-11-16"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cash Receipts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query cash receipts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.tosspayments.com/v1/cash-receipts",
+            "params": [
+              {
+                "name": "requestDate",
+                "value": "",
+                "type": "query",
+                "description": "The date (YYYY-MM-DD) cash receipts were requested."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of records to return (up to 10000)."
+              },
+              {
+                "name": "startingAfter",
+                "value": "",
+                "type": "query",
+                "description": "Cursor - return records after this receiptKey."
+              }
+            ]
+          },
+          "docs": "Queries issued cash receipts by request date with cursor pagination."
+        },
+        {
+          "info": {
+            "name": "Issue a cash receipt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/cash-receipts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a Korean cash receipt for income deduction or expense evidence."
+        },
+        {
+          "info": {
+            "name": "Cancel a cash receipt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.tosspayments.com/v1/cash-receipts/:receiptKey/cancel",
+            "params": [
+              {
+                "name": "receiptKey",
+                "value": "",
+                "type": "path",
+                "description": "The key identifying the cash receipt."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels a cash receipt in full or in part."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

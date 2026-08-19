@@ -1,0 +1,374 @@
+{
+  "item": [
+    {
+      "id": "d4169bfd-fcd0-472f-b3ab-95daf94aa3c3",
+      "name": "Payouts",
+      "description": {
+        "content": "Marketplace balance and seller payouts (v2).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6b76d5cc-c06e-437b-a149-c9a679d911d8",
+          "name": "Retrieve payout balance",
+          "request": {
+            "name": "Retrieve payout balance",
+            "description": {
+              "content": "Returns the funds available for payouts. Part of the marketplace payouts (v2) product, which requires an additional contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "balances"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c9dca11-0ea0-4c95-854e-91da2c7e6eed",
+              "name": "The available balance.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availableAmount\": 2821,\n  \"pendingAmount\": 2212\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d9b7454-ae38-4ed3-98bf-3d344c55c2a1",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df2ba8c8-a0ab-4f17-ab9d-0fc966c1c13c",
+          "name": "Request payouts",
+          "request": {
+            "name": "Request payouts",
+            "description": {
+              "content": "Sends a batch of payout requests to sellers (up to 100 per call). Payouts can be immediate or scheduled. Status changes are delivered via the payout.changed webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "payouts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    },\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5f932175-fe75-44f0-bf94-471ca40fb5b7",
+              "name": "The accepted payout requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    },\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"refPayoutId\": \"string\",\n    \"destination\": \"string\",\n    \"scheduleType\": \"string\",\n    \"payoutDate\": \"1983-12-01\",\n    \"amount\": 4587,\n    \"status\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"refPayoutId\": \"string\",\n    \"destination\": \"string\",\n    \"scheduleType\": \"string\",\n    \"payoutDate\": \"1947-08-13\",\n    \"amount\": 3427,\n    \"status\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06aa62cd-3d85-42ad-b25c-94e824ceb399",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    },\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbf6d059-e107-4671-84ca-f1cb3a930144",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "payouts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payouts\": [\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    },\n    {\n      \"refPayoutId\": \"<string>\",\n      \"destination\": \"<string>\",\n      \"amount\": \"<integer>\",\n      \"scheduleType\": \"<string>\",\n      \"payoutDate\": \"<date>\",\n      \"transactionDescription\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tosspayments.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "abcd9c62-f002-41c4-80e0-28995ea72e71",
+    "name": "Toss Payments Core Billing Payouts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.\n\nContact Support:\n Name: Toss Payments Developer Center",
+      "type": "text/plain"
+    }
+  }
+}

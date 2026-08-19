@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "0e13bcaf-5529-4d72-9ac2-6fc68ab14db8",
+      "name": "Virtual Accounts",
+      "description": {
+        "content": "Per-order virtual bank account issuance.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d20895d7-17ac-45c5-93dd-1bf98cc6fd19",
+          "name": "Issue a virtual account",
+          "request": {
+            "name": "Issue a virtual account",
+            "description": {
+              "content": "Issues a per-order virtual bank account for the customer to deposit into. Deposit and cancellation events arrive via the DEPOSIT_CALLBACK webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "virtual-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"bank\": \"<string>\",\n  \"validHours\": \"<integer>\",\n  \"dueDate\": \"<dateTime>\",\n  \"cashReceipt\": {\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1f9be687-b7fa-4e20-a205-2e44fd673866",
+              "name": "The Payment object containing the issued virtual account.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"bank\": \"<string>\",\n  \"validHours\": \"<integer>\",\n  \"dueDate\": \"<dateTime>\",\n  \"cashReceipt\": {\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"paymentKey\": \"string\",\n  \"orderId\": \"string\",\n  \"orderName\": \"string\",\n  \"status\": \"CANCELED\",\n  \"method\": \"문화상품권\",\n  \"totalAmount\": 8222,\n  \"balanceAmount\": 1541,\n  \"suppliedAmount\": 1221,\n  \"vat\": 8344,\n  \"taxFreeAmount\": 4512,\n  \"currency\": \"string\",\n  \"requestedAt\": \"1969-12-10T14:50:19.590Z\",\n  \"approvedAt\": \"1987-09-17T09:56:33.444Z\",\n  \"card\": {\n    \"company\": \"string\",\n    \"number\": \"string\",\n    \"installmentPlanMonths\": 6100,\n    \"approveNo\": \"string\",\n    \"cardType\": \"신용\",\n    \"ownerType\": \"개인\"\n  },\n  \"virtualAccount\": {\n    \"accountType\": \"고정\",\n    \"accountNumber\": \"string\",\n    \"bankCode\": \"string\",\n    \"customerName\": \"string\",\n    \"dueDate\": \"1991-04-13T04:53:41.815Z\",\n    \"refundStatus\": \"string\",\n    \"settlementStatus\": \"string\"\n  },\n  \"easyPay\": {\n    \"provider\": \"string\",\n    \"amount\": 4664,\n    \"discountAmount\": 1176\n  },\n  \"cancels\": [\n    {\n      \"cancelAmount\": 7743,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1956-03-30T14:52:24.960Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    },\n    {\n      \"cancelAmount\": 3236,\n      \"cancelReason\": \"string\",\n      \"canceledAt\": \"1989-02-12T12:39:06.836Z\",\n      \"transactionKey\": \"string\",\n      \"cancelStatus\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "271f71a5-4541-464a-bf1f-ab7bf2b4dc67",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"bank\": \"<string>\",\n  \"validHours\": \"<integer>\",\n  \"dueDate\": \"<dateTime>\",\n  \"cashReceipt\": {\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22db09ea-1173-4ee8-bed6-033361c8c141",
+              "name": "Missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"orderId\": \"<string>\",\n  \"orderName\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"bank\": \"<string>\",\n  \"validHours\": \"<integer>\",\n  \"dueDate\": \"<dateTime>\",\n  \"cashReceipt\": {\n    \"type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.tosspayments.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "374bcbea-85b4-4181-a834-06fda00b2c3e",
+    "name": "Toss Payments Core Billing Virtual Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.\n\nContact Support:\n Name: Toss Payments Developer Center",
+      "type": "text/plain"
+    }
+  }
+}

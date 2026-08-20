@@ -43,6 +43,10 @@ apis:
   tags:
   - Brandpay
   - Easy Pay
+  - Wallets
+  tags_raw:
+  - Brandpay
+  - Easy Pay
   - Wallet
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.tosspayments.com/reference/brandpay
@@ -149,6 +153,8 @@ apis:
   humanURL: https://docs.tosspayments.com/reference
   baseURL: https://api.tosspayments.com
   tags:
+  - Settlement
+  tags_raw:
   - Settlements
   properties:
   - type: OpenAPI
@@ -171,6 +177,8 @@ apis:
   humanURL: https://docs.tosspayments.com/reference
   baseURL: https://api.tosspayments.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI

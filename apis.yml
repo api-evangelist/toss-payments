@@ -2,14 +2,13 @@ aid: toss-payments
 url: https://raw.githubusercontent.com/api-evangelist/toss-payments/refs/heads/main/apis.yml
 name: Toss Payments
 kind: company
-description: Toss Payments is a South Korean payment gateway (PG) operated by Viva
-  Republica, the company behind the Toss super-app. Its REST API lets merchants
-  accept and manage online payments across cards, Korean easy-pay wallets (Toss Pay,
-  KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing.
-  The Core API (base https://api.tosspayments.com) covers payment confirmation and
-  cancellation, recurring billing keys, virtual account issuance, cash receipts,
-  transaction and settlement queries, and seller payouts, with asynchronous results
-  delivered by webhooks. Authentication is HTTP Basic using a secret API key.
+description: Toss Payments is a South Korean payment gateway (PG) operated by Viva Republica, the company
+  behind the Toss super-app. Its REST API lets merchants accept and manage online payments across cards,
+  Korean easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone
+  billing. The Core API (base https://api.tosspayments.com) covers payment confirmation and cancellation,
+  recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries,
+  and seller payouts, with asynchronous results delivered by webhooks. Authentication is HTTP Basic using
+  a secret API key.
 deliveryModel:
   model: saas
   open_source: false
@@ -48,7 +47,7 @@ tags:
 - Checkout
 - Fintech
 created: '2026-07-12'
-modified: '2026-07-12'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: toss-payments:toss-payments-brandpay-api
@@ -67,9 +66,8 @@ apis:
   properties:
   - url: https://docs.tosspayments.com/reference/brandpay
     type: Documentation
-  description: >-
-    Brandpay is Toss Payments' embeddable in-merchant easy-pay wallet, letting customers register payment
-    methods once and reuse them. Method and customer status changes are pushed via the METHOD_UPDATED
+  description: Brandpay is Toss Payments' embeddable in-merchant easy-pay wallet, letting customers register
+    payment methods once and reuse them. Method and customer status changes are pushed via the METHOD_UPDATED
     and CUSTOMER_STATUS_CHANGED webhooks. (Documented product; individual Brandpay endpoints are not modeled
     in the OpenAPI in this entry.)
 - aid: toss-payments:toss-payments-billing-api
@@ -117,7 +115,7 @@ apis:
   - type: Documentation
     url: https://docs.tosspayments.com/en/integration-payouts
 - aid: toss-payments:toss-payments-payments-api
-  name: Toss Payments Payments API
+  name: Toss Payments API
   description: Confirm, retrieve, and cancel payments.
   humanURL: https://docs.tosspayments.com/reference
   baseURL: https://api.tosspayments.com

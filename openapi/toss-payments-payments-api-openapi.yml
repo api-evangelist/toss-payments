@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Toss Core Billing Payments API
-  description: 'The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing. This document models a representative, grounded subset of the Core API: payment confirmation and cancellation, recurring billing keys, virtual account issuance, cash receipts, transaction and settlement queries, and marketplace payouts. All requests authenticate with HTTP Basic auth - the secret API key is used as the username with an empty password, Base64 encoded (`Authorization: Basic base64(secretKey:)`). Asynchronous results (virtual account deposits, foreign payment cancellations, Brandpay and payout status changes) are delivered by webhooks, which are out of scope for this REST document. Field names follow the Korean documentation, translated where helpful. This is a modeled subset authored by API Evangelist from the public documentation, not an official Toss Payments OpenAPI artifact.'
+  title: Toss Core Payments API
+  description: The Toss Payments Core API is a REST interface for accepting and managing online payments in South Korea across cards, easy-pay wallets (Toss Pay, KakaoPay, Naver Pay), virtual accounts, bank transfer, and mobile-phone billing.
   version: '2022-11-16'
   contact:
     name: Toss Payments Developer Center
@@ -147,32 +147,51 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Forbidden:
-      description: The key is not permitted to perform this action.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    PaymentKey:
+      name: paymentKey
+      in: path
+      required: true
+      description: The unique key identifying the payment (max 200 chars).
+      schema:
+        type: string
   schemas:
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
+    Card:
+      type: object
+      properties:
+        company:
+          type: string
+        number:
+          type: string
+        installmentPlanMonths:
+          type: integer
+        approveNo:
+          type: string
+        cardType:
+          type: string
+          enum:
+          - 신용
+          - 체크
+          - 기프트
+        ownerType:
+          type: string
+          enum:
+          - 개인
+          - 법인
     KeyInPaymentRequest:
       type: object
       required:
@@ -201,49 +220,30 @@ components:
         cardInstallmentPlan:
           type: integer
           description: Number of installment months (0 for lump sum).
-    Cancel:
+    Error:
       type: object
+      description: Standard Toss Payments error body.
       properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
+        code:
           type: string
-        canceledAt:
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
           type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
-    ConfirmPaymentRequest:
+          description: Human-readable error message (Korean by default).
+    RefundReceiveAccount:
       type: object
+      description: Refund destination account, required for virtual account cancellations.
       required:
-      - paymentKey
-      - orderId
-      - amount
+      - bank
+      - accountNumber
+      - holderName
       properties:
-        paymentKey:
+        bank:
           type: string
-        orderId:
+          description: Bank code.
+        accountNumber:
           type: string
-        amount:
-          type: integer
-          description: The amount to approve; must match the amount created in the window.
-    CancelPaymentRequest:
-      type: object
-      required:
-      - cancelReason
-      properties:
-        cancelReason:
-          type: string
-        cancelAmount:
-          type: integer
-          description: Amount to cancel for a partial cancellation; omit to cancel in full.
-        refundReceiveAccount:
-          $ref: '#/components/schemas/RefundReceiveAccount'
-        taxFreeAmount:
-          type: integer
-        currency:
+        holderName:
           type: string
     VirtualAccount:
       type: object
@@ -266,6 +266,20 @@ components:
           type: string
         settlementStatus:
           type: string
+    ConfirmPaymentRequest:
+      type: object
+      required:
+      - paymentKey
+      - orderId
+      - amount
+      properties:
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        amount:
+          type: integer
+          description: The amount to approve; must match the amount created in the window.
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -336,61 +350,47 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Cancel'
-    Card:
+    CancelPaymentRequest:
       type: object
-      properties:
-        company:
-          type: string
-        number:
-          type: string
-        installmentPlanMonths:
-          type: integer
-        approveNo:
-          type: string
-        cardType:
-          type: string
-          enum:
-          - 신용
-          - 체크
-          - 기프트
-        ownerType:
-          type: string
-          enum:
-          - 개인
-          - 법인
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
-    RefundReceiveAccount:
-      type: object
-      description: Refund destination account, required for virtual account cancellations.
       required:
-      - bank
-      - accountNumber
-      - holderName
+      - cancelReason
       properties:
-        bank:
+        cancelReason:
           type: string
-          description: Bank code.
-        accountNumber:
+        cancelAmount:
+          type: integer
+          description: Amount to cancel for a partial cancellation; omit to cancel in full.
+        refundReceiveAccount:
+          $ref: '#/components/schemas/RefundReceiveAccount'
+        taxFreeAmount:
+          type: integer
+        currency:
           type: string
-        holderName:
-          type: string
-  parameters:
-    PaymentKey:
-      name: paymentKey
-      in: path
-      required: true
-      description: The unique key identifying the payment (max 200 chars).
-      schema:
-        type: string
+  responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: The key is not permitted to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

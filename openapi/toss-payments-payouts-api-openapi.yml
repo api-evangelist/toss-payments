@@ -92,23 +92,6 @@ components:
                 type: integer
               transactionDescription:
                 type: string
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
-    Balance:
-      type: object
-      properties:
-        availableAmount:
-          type: integer
-        pendingAmount:
-          type: integer
     Payout:
       type: object
       properties:
@@ -127,15 +110,32 @@ components:
           type: integer
         status:
           type: string
+    Balance:
+      type: object
+      properties:
+        availableAmount:
+          type: integer
+        pendingAmount:
+          type: integer
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
   responses:
-    BadRequest:
-      description: The request was invalid.
+    Unauthorized:
+      description: Missing or invalid secret key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid secret key.
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:

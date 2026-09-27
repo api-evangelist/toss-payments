@@ -147,29 +147,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    PaymentKey:
-      name: paymentKey
-      in: path
-      required: true
-      description: The unique key identifying the payment (max 200 chars).
-      schema:
-        type: string
   schemas:
-    Cancel:
-      type: object
-      properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
-          type: string
-        canceledAt:
-          type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
     Card:
       type: object
       properties:
@@ -192,6 +170,20 @@ components:
           enum:
           - 개인
           - 법인
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
     KeyInPaymentRequest:
       type: object
       required:
@@ -220,66 +212,6 @@ components:
         cardInstallmentPlan:
           type: integer
           description: Number of installment months (0 for lump sum).
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
-    RefundReceiveAccount:
-      type: object
-      description: Refund destination account, required for virtual account cancellations.
-      required:
-      - bank
-      - accountNumber
-      - holderName
-      properties:
-        bank:
-          type: string
-          description: Bank code.
-        accountNumber:
-          type: string
-        holderName:
-          type: string
-    VirtualAccount:
-      type: object
-      properties:
-        accountType:
-          type: string
-          enum:
-          - 일반
-          - 고정
-        accountNumber:
-          type: string
-        bankCode:
-          type: string
-        customerName:
-          type: string
-        dueDate:
-          type: string
-          format: date-time
-        refundStatus:
-          type: string
-        settlementStatus:
-          type: string
-    ConfirmPaymentRequest:
-      type: object
-      required:
-      - paymentKey
-      - orderId
-      - amount
-      properties:
-        paymentKey:
-          type: string
-        orderId:
-          type: string
-        amount:
-          type: integer
-          description: The amount to approve; must match the amount created in the window.
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -350,6 +282,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Cancel'
+    VirtualAccount:
+      type: object
+      properties:
+        accountType:
+          type: string
+          enum:
+          - 일반
+          - 고정
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+        customerName:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        refundStatus:
+          type: string
+        settlementStatus:
+          type: string
     CancelPaymentRequest:
       type: object
       required:
@@ -366,19 +319,46 @@ components:
           type: integer
         currency:
           type: string
+    ConfirmPaymentRequest:
+      type: object
+      required:
+      - paymentKey
+      - orderId
+      - amount
+      properties:
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        amount:
+          type: integer
+          description: The amount to approve; must match the amount created in the window.
+    RefundReceiveAccount:
+      type: object
+      description: Refund destination account, required for virtual account cancellations.
+      required:
+      - bank
+      - accountNumber
+      - holderName
+      properties:
+        bank:
+          type: string
+          description: Bank code.
+        accountNumber:
+          type: string
+        holderName:
+          type: string
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
   responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Forbidden:
       description: The key is not permitted to perform this action.
       content:
@@ -391,6 +371,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PaymentKey:
+      name: paymentKey
+      in: path
+      required: true
+      description: The unique key identifying the payment (max 200 chars).
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http

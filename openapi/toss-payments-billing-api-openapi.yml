@@ -97,6 +97,51 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    IssueBillingKeyFromCardRequest:
+      type: object
+      required:
+      - customerKey
+      - cardNumber
+      - cardExpirationYear
+      - cardExpirationMonth
+      - customerIdentityNumber
+      properties:
+        customerKey:
+          type: string
+        cardNumber:
+          type: string
+        cardExpirationYear:
+          type: string
+        cardExpirationMonth:
+          type: string
+        customerIdentityNumber:
+          type: string
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
+    IssueBillingKeyRequest:
+      type: object
+      required:
+      - authKey
+      - customerKey
+      properties:
+        authKey:
+          type: string
+          description: The authKey returned by the billing authorization window.
+        customerKey:
+          type: string
+          description: Merchant-assigned customer identifier (2-300 chars).
     Card:
       type: object
       properties:
@@ -119,20 +164,54 @@ components:
           enum:
           - 개인
           - 법인
-    Cancel:
+    BillingChargeRequest:
+      type: object
+      required:
+      - customerKey
+      - amount
+      - orderId
+      - orderName
+      properties:
+        customerKey:
+          type: string
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        customerEmail:
+          type: string
+        customerName:
+          type: string
+        taxFreeAmount:
+          type: integer
+    Billing:
       type: object
       properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
+        billingKey:
           type: string
-        canceledAt:
+        customerKey:
+          type: string
+        method:
+          type: string
+        cardCompany:
+          type: string
+        cardNumber:
+          type: string
+        authenticatedAt:
           type: string
           format: date-time
-        transactionKey:
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
           type: string
-        cancelStatus:
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
           type: string
+          description: Human-readable error message (Korean by default).
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -224,94 +303,15 @@ components:
           type: string
         settlementStatus:
           type: string
-    Billing:
-      type: object
-      properties:
-        billingKey:
-          type: string
-        customerKey:
-          type: string
-        method:
-          type: string
-        cardCompany:
-          type: string
-        cardNumber:
-          type: string
-        authenticatedAt:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
-    IssueBillingKeyFromCardRequest:
-      type: object
-      required:
-      - customerKey
-      - cardNumber
-      - cardExpirationYear
-      - cardExpirationMonth
-      - customerIdentityNumber
-      properties:
-        customerKey:
-          type: string
-        cardNumber:
-          type: string
-        cardExpirationYear:
-          type: string
-        cardExpirationMonth:
-          type: string
-        customerIdentityNumber:
-          type: string
-    IssueBillingKeyRequest:
-      type: object
-      required:
-      - authKey
-      - customerKey
-      properties:
-        authKey:
-          type: string
-          description: The authKey returned by the billing authorization window.
-        customerKey:
-          type: string
-          description: Merchant-assigned customer identifier (2-300 chars).
-    BillingChargeRequest:
-      type: object
-      required:
-      - customerKey
-      - amount
-      - orderId
-      - orderName
-      properties:
-        customerKey:
-          type: string
-        amount:
-          type: integer
-        orderId:
-          type: string
-        orderName:
-          type: string
-        customerEmail:
-          type: string
-        customerName:
-          type: string
-        taxFreeAmount:
-          type: integer
   responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
+    Unauthorized:
+      description: Missing or invalid secret key.
       content:
         application/json:
           schema:

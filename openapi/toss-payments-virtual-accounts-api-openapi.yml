@@ -42,6 +42,55 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    VirtualAccountRequest:
+      type: object
+      required:
+      - amount
+      - orderId
+      - orderName
+      - customerName
+      - bank
+      properties:
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        customerName:
+          type: string
+        bank:
+          type: string
+          description: Bank code for the virtual account.
+        validHours:
+          type: integer
+          description: Hours the virtual account remains valid.
+        dueDate:
+          type: string
+          format: date-time
+        cashReceipt:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+              - 소득공제
+              - 지출증빙
+              - 미발행
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
     Card:
       type: object
       properties:
@@ -64,20 +113,16 @@ components:
           enum:
           - 개인
           - 법인
-    Cancel:
+    Error:
       type: object
+      description: Standard Toss Payments error body.
       properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
+        code:
           type: string
-        canceledAt:
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
           type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
+          description: Human-readable error message (Korean by default).
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -169,60 +214,15 @@ components:
           type: string
         settlementStatus:
           type: string
-    VirtualAccountRequest:
-      type: object
-      required:
-      - amount
-      - orderId
-      - orderName
-      - customerName
-      - bank
-      properties:
-        amount:
-          type: integer
-        orderId:
-          type: string
-        orderName:
-          type: string
-        customerName:
-          type: string
-        bank:
-          type: string
-          description: Bank code for the virtual account.
-        validHours:
-          type: integer
-          description: Hours the virtual account remains valid.
-        dueDate:
-          type: string
-          format: date-time
-        cashReceipt:
-          type: object
-          properties:
-            type:
-              type: string
-              enum:
-              - 소득공제
-              - 지출증빙
-              - 미발행
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
   responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
+    Unauthorized:
+      description: Missing or invalid secret key.
       content:
         application/json:
           schema:

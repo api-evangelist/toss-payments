@@ -60,38 +60,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    PayoutRequest:
-      type: object
-      required:
-      - payouts
-      properties:
-        payouts:
-          type: array
-          items:
-            type: object
-            required:
-            - refPayoutId
-            - destination
-            - amount
-            properties:
-              refPayoutId:
-                type: string
-                description: Merchant-assigned payout reference ID.
-              destination:
-                type: string
-                description: The seller/destination identifier.
-              scheduleType:
-                type: string
-                enum:
-                - SCHEDULED
-                - EXPRESS
-              payoutDate:
-                type: string
-                format: date
-              amount:
-                type: integer
-              transactionDescription:
-                type: string
     Payout:
       type: object
       properties:
@@ -127,15 +95,47 @@ components:
         message:
           type: string
           description: Human-readable error message (Korean by default).
+    PayoutRequest:
+      type: object
+      required:
+      - payouts
+      properties:
+        payouts:
+          type: array
+          items:
+            type: object
+            required:
+            - refPayoutId
+            - destination
+            - amount
+            properties:
+              refPayoutId:
+                type: string
+                description: Merchant-assigned payout reference ID.
+              destination:
+                type: string
+                description: The seller/destination identifier.
+              scheduleType:
+                type: string
+                enum:
+                - SCHEDULED
+                - EXPRESS
+              payoutDate:
+                type: string
+                format: date
+              amount:
+                type: integer
+              transactionDescription:
+                type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
+    Unauthorized:
+      description: Missing or invalid secret key.
       content:
         application/json:
           schema:

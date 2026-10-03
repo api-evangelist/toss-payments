@@ -63,14 +63,17 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
     Transaction:
       type: object
       properties:
@@ -91,16 +94,13 @@ components:
           format: date-time
         status:
           type: string
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
+  responses:
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

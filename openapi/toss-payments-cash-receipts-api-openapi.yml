@@ -117,42 +117,19 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: The request was invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    CashReceipt:
-      type: object
-      properties:
-        receiptKey:
-          type: string
-        orderId:
-          type: string
-        type:
-          type: string
-        issueNumber:
-          type: string
-        receiptUrl:
-          type: string
-        amount:
-          type: integer
-        taxFreeAmount:
-          type: integer
-        issueStatus:
-          type: string
-          enum:
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
     CashReceiptRequest:
       type: object
       required:
@@ -188,6 +165,29 @@ components:
         message:
           type: string
           description: Human-readable error message (Korean by default).
+    CashReceipt:
+      type: object
+      properties:
+        receiptKey:
+          type: string
+        orderId:
+          type: string
+        type:
+          type: string
+        issueNumber:
+          type: string
+        receiptUrl:
+          type: string
+        amount:
+          type: integer
+        taxFreeAmount:
+          type: integer
+        issueStatus:
+          type: string
+          enum:
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
   securitySchemes:
     basicAuth:
       type: http

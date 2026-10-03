@@ -148,6 +148,36 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    CancelPaymentRequest:
+      type: object
+      required:
+      - cancelReason
+      properties:
+        cancelReason:
+          type: string
+        cancelAmount:
+          type: integer
+          description: Amount to cancel for a partial cancellation; omit to cancel in full.
+        refundReceiveAccount:
+          $ref: '#/components/schemas/RefundReceiveAccount'
+        taxFreeAmount:
+          type: integer
+        currency:
+          type: string
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
     Card:
       type: object
       properties:
@@ -170,20 +200,20 @@ components:
           enum:
           - 개인
           - 법인
-    Cancel:
+    ConfirmPaymentRequest:
       type: object
+      required:
+      - paymentKey
+      - orderId
+      - amount
       properties:
-        cancelAmount:
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        amount:
           type: integer
-        cancelReason:
-          type: string
-        canceledAt:
-          type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
+          description: The amount to approve; must match the amount created in the window.
     KeyInPaymentRequest:
       type: object
       required:
@@ -212,6 +242,16 @@ components:
         cardInstallmentPlan:
           type: integer
           description: Number of installment months (0 for lump sum).
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -282,6 +322,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Cancel'
+    RefundReceiveAccount:
+      type: object
+      description: Refund destination account, required for virtual account cancellations.
+      required:
+      - bank
+      - accountNumber
+      - holderName
+      properties:
+        bank:
+          type: string
+          description: Bank code.
+        accountNumber:
+          type: string
+        holderName:
+          type: string
     VirtualAccount:
       type: object
       properties:
@@ -303,62 +358,13 @@ components:
           type: string
         settlementStatus:
           type: string
-    CancelPaymentRequest:
-      type: object
-      required:
-      - cancelReason
-      properties:
-        cancelReason:
-          type: string
-        cancelAmount:
-          type: integer
-          description: Amount to cancel for a partial cancellation; omit to cancel in full.
-        refundReceiveAccount:
-          $ref: '#/components/schemas/RefundReceiveAccount'
-        taxFreeAmount:
-          type: integer
-        currency:
-          type: string
-    ConfirmPaymentRequest:
-      type: object
-      required:
-      - paymentKey
-      - orderId
-      - amount
-      properties:
-        paymentKey:
-          type: string
-        orderId:
-          type: string
-        amount:
-          type: integer
-          description: The amount to approve; must match the amount created in the window.
-    RefundReceiveAccount:
-      type: object
-      description: Refund destination account, required for virtual account cancellations.
-      required:
-      - bank
-      - accountNumber
-      - holderName
-      properties:
-        bank:
-          type: string
-          description: Bank code.
-        accountNumber:
-          type: string
-        holderName:
-          type: string
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
   responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Forbidden:
       description: The key is not permitted to perform this action.
       content:
@@ -373,12 +379,6 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
       content:
         application/json:
           schema:

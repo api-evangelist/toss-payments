@@ -60,6 +60,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Balance:
+      type: object
+      properties:
+        availableAmount:
+          type: integer
+        pendingAmount:
+          type: integer
     Payout:
       type: object
       properties:
@@ -78,23 +85,6 @@ components:
           type: integer
         status:
           type: string
-    Balance:
-      type: object
-      properties:
-        availableAmount:
-          type: integer
-        pendingAmount:
-          type: integer
-    Error:
-      type: object
-      description: Standard Toss Payments error body.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
-        message:
-          type: string
-          description: Human-readable error message (Korean by default).
     PayoutRequest:
       type: object
       required:
@@ -127,6 +117,16 @@ components:
                 type: integer
               transactionDescription:
                 type: string
+    Error:
+      type: object
+      description: Standard Toss Payments error body.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code (for example INVALID_CARD_EXPIRATION).
+        message:
+          type: string
+          description: Human-readable error message (Korean by default).
   responses:
     BadRequest:
       description: The request was invalid.

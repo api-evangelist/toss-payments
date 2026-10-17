@@ -59,32 +59,20 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Balance:
-      type: object
-      properties:
-        availableAmount:
-          type: integer
-        pendingAmount:
-          type: integer
-    Payout:
-      type: object
-      properties:
-        id:
-          type: string
-        refPayoutId:
-          type: string
-        destination:
-          type: string
-        scheduleType:
-          type: string
-        payoutDate:
-          type: string
-          format: date
-        amount:
-          type: integer
-        status:
-          type: string
     PayoutRequest:
       type: object
       required:
@@ -117,6 +105,31 @@ components:
                 type: integer
               transactionDescription:
                 type: string
+    Payout:
+      type: object
+      properties:
+        id:
+          type: string
+        refPayoutId:
+          type: string
+        destination:
+          type: string
+        scheduleType:
+          type: string
+        payoutDate:
+          type: string
+          format: date
+        amount:
+          type: integer
+        status:
+          type: string
+    Balance:
+      type: object
+      properties:
+        availableAmount:
+          type: integer
+        pendingAmount:
+          type: integer
     Error:
       type: object
       description: Standard Toss Payments error body.
@@ -127,19 +140,6 @@ components:
         message:
           type: string
           description: Human-readable error message (Korean by default).
-  responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

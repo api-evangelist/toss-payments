@@ -141,14 +141,14 @@ components:
           type: string
           description: Human-readable error message (Korean by default).
   responses:
-    Unauthorized:
-      description: Missing or invalid secret key.
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
+    Unauthorized:
+      description: Missing or invalid secret key.
       content:
         application/json:
           schema:

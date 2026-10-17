@@ -97,58 +97,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Billing:
-      type: object
-      properties:
-        billingKey:
-          type: string
-        customerKey:
-          type: string
-        method:
-          type: string
-        cardCompany:
-          type: string
-        cardNumber:
-          type: string
-        authenticatedAt:
-          type: string
-          format: date-time
-    Card:
-      type: object
-      properties:
-        company:
-          type: string
-        number:
-          type: string
-        installmentPlanMonths:
-          type: integer
-        approveNo:
-          type: string
-        cardType:
-          type: string
-          enum:
-          - 신용
-          - 체크
-          - 기프트
-        ownerType:
-          type: string
-          enum:
-          - 개인
-          - 법인
-    Cancel:
-      type: object
-      properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
-          type: string
-        canceledAt:
-          type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
     VirtualAccount:
       type: object
       properties:
@@ -170,28 +118,20 @@ components:
           type: string
         settlementStatus:
           type: string
-    BillingChargeRequest:
+    Cancel:
       type: object
-      required:
-      - customerKey
-      - amount
-      - orderId
-      - orderName
       properties:
-        customerKey:
-          type: string
-        amount:
+        cancelAmount:
           type: integer
-        orderId:
+        cancelReason:
           type: string
-        orderName:
+        canceledAt:
           type: string
-        customerEmail:
+          format: date-time
+        transactionKey:
           type: string
-        customerName:
+        cancelStatus:
           type: string
-        taxFreeAmount:
-          type: integer
     IssueBillingKeyRequest:
       type: object
       required:
@@ -204,25 +144,6 @@ components:
         customerKey:
           type: string
           description: Merchant-assigned customer identifier (2-300 chars).
-    IssueBillingKeyFromCardRequest:
-      type: object
-      required:
-      - customerKey
-      - cardNumber
-      - cardExpirationYear
-      - cardExpirationMonth
-      - customerIdentityNumber
-      properties:
-        customerKey:
-          type: string
-        cardNumber:
-          type: string
-        cardExpirationYear:
-          type: string
-        cardExpirationMonth:
-          type: string
-        customerIdentityNumber:
-          type: string
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -293,6 +214,66 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Cancel'
+    Card:
+      type: object
+      properties:
+        company:
+          type: string
+        number:
+          type: string
+        installmentPlanMonths:
+          type: integer
+        approveNo:
+          type: string
+        cardType:
+          type: string
+          enum:
+          - 신용
+          - 체크
+          - 기프트
+        ownerType:
+          type: string
+          enum:
+          - 개인
+          - 법인
+    Billing:
+      type: object
+      properties:
+        billingKey:
+          type: string
+        customerKey:
+          type: string
+        method:
+          type: string
+        cardCompany:
+          type: string
+        cardNumber:
+          type: string
+        authenticatedAt:
+          type: string
+          format: date-time
+    BillingChargeRequest:
+      type: object
+      required:
+      - customerKey
+      - amount
+      - orderId
+      - orderName
+      properties:
+        customerKey:
+          type: string
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        customerEmail:
+          type: string
+        customerName:
+          type: string
+        taxFreeAmount:
+          type: integer
     Error:
       type: object
       description: Standard Toss Payments error body.
@@ -303,6 +284,25 @@ components:
         message:
           type: string
           description: Human-readable error message (Korean by default).
+    IssueBillingKeyFromCardRequest:
+      type: object
+      required:
+      - customerKey
+      - cardNumber
+      - cardExpirationYear
+      - cardExpirationMonth
+      - customerIdentityNumber
+      properties:
+        customerKey:
+          type: string
+        cardNumber:
+          type: string
+        cardExpirationYear:
+          type: string
+        cardExpirationMonth:
+          type: string
+        customerIdentityNumber:
+          type: string
   responses:
     BadRequest:
       description: The request was invalid.

@@ -148,56 +148,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    KeyInPaymentRequest:
-      type: object
-      required:
-      - amount
-      - orderId
-      - orderName
-      - cardNumber
-      - cardExpirationYear
-      - cardExpirationMonth
-      properties:
-        amount:
-          type: integer
-        orderId:
-          type: string
-        orderName:
-          type: string
-        cardNumber:
-          type: string
-        cardExpirationYear:
-          type: string
-        cardExpirationMonth:
-          type: string
-        customerIdentityNumber:
-          type: string
-          description: Birth date (YYMMDD) or business registration number.
-        cardInstallmentPlan:
-          type: integer
-          description: Number of installment months (0 for lump sum).
-    Card:
-      type: object
-      properties:
-        company:
-          type: string
-        number:
-          type: string
-        installmentPlanMonths:
-          type: integer
-        approveNo:
-          type: string
-        cardType:
-          type: string
-          enum:
-          - 신용
-          - 체크
-          - 기프트
-        ownerType:
-          type: string
-          enum:
-          - 개인
-          - 법인
     RefundReceiveAccount:
       type: object
       description: Refund destination account, required for virtual account cancellations.
@@ -212,36 +162,6 @@ components:
         accountNumber:
           type: string
         holderName:
-          type: string
-    Cancel:
-      type: object
-      properties:
-        cancelAmount:
-          type: integer
-        cancelReason:
-          type: string
-        canceledAt:
-          type: string
-          format: date-time
-        transactionKey:
-          type: string
-        cancelStatus:
-          type: string
-    CancelPaymentRequest:
-      type: object
-      required:
-      - cancelReason
-      properties:
-        cancelReason:
-          type: string
-        cancelAmount:
-          type: integer
-          description: Amount to cancel for a partial cancellation; omit to cancel in full.
-        refundReceiveAccount:
-          $ref: '#/components/schemas/RefundReceiveAccount'
-        taxFreeAmount:
-          type: integer
-        currency:
           type: string
     VirtualAccount:
       type: object
@@ -264,6 +184,34 @@ components:
           type: string
         settlementStatus:
           type: string
+    Cancel:
+      type: object
+      properties:
+        cancelAmount:
+          type: integer
+        cancelReason:
+          type: string
+        canceledAt:
+          type: string
+          format: date-time
+        transactionKey:
+          type: string
+        cancelStatus:
+          type: string
+    ConfirmPaymentRequest:
+      type: object
+      required:
+      - paymentKey
+      - orderId
+      - amount
+      properties:
+        paymentKey:
+          type: string
+        orderId:
+          type: string
+        amount:
+          type: integer
+          description: The amount to approve; must match the amount created in the window.
     Payment:
       type: object
       description: A Toss Payments Payment object.
@@ -334,20 +282,44 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Cancel'
-    ConfirmPaymentRequest:
+    Card:
+      type: object
+      properties:
+        company:
+          type: string
+        number:
+          type: string
+        installmentPlanMonths:
+          type: integer
+        approveNo:
+          type: string
+        cardType:
+          type: string
+          enum:
+          - 신용
+          - 체크
+          - 기프트
+        ownerType:
+          type: string
+          enum:
+          - 개인
+          - 법인
+    CancelPaymentRequest:
       type: object
       required:
-      - paymentKey
-      - orderId
-      - amount
+      - cancelReason
       properties:
-        paymentKey:
+        cancelReason:
           type: string
-        orderId:
-          type: string
-        amount:
+        cancelAmount:
           type: integer
-          description: The amount to approve; must match the amount created in the window.
+          description: Amount to cancel for a partial cancellation; omit to cancel in full.
+        refundReceiveAccount:
+          $ref: '#/components/schemas/RefundReceiveAccount'
+        taxFreeAmount:
+          type: integer
+        currency:
+          type: string
     Error:
       type: object
       description: Standard Toss Payments error body.
@@ -358,29 +330,37 @@ components:
         message:
           type: string
           description: Human-readable error message (Korean by default).
-  parameters:
-    PaymentKey:
-      name: paymentKey
-      in: path
-      required: true
-      description: The unique key identifying the payment (max 200 chars).
-      schema:
-        type: string
+    KeyInPaymentRequest:
+      type: object
+      required:
+      - amount
+      - orderId
+      - orderName
+      - cardNumber
+      - cardExpirationYear
+      - cardExpirationMonth
+      properties:
+        amount:
+          type: integer
+        orderId:
+          type: string
+        orderName:
+          type: string
+        cardNumber:
+          type: string
+        cardExpirationYear:
+          type: string
+        cardExpirationMonth:
+          type: string
+        customerIdentityNumber:
+          type: string
+          description: Birth date (YYMMDD) or business registration number.
+        cardInstallmentPlan:
+          type: integer
+          description: Number of installment months (0 for lump sum).
   responses:
     BadRequest:
       description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -391,6 +371,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PaymentKey:
+      name: paymentKey
+      in: path
+      required: true
+      description: The unique key identifying the payment (max 200 chars).
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http
